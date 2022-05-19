@@ -1,13 +1,11 @@
-from django.shortcuts import get_object_or_404, render
-from rest_framework.decorators import api_view
-from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-# from rest_framework.decorators import detail_route, list_route
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.urls import reverse
+from django.views import generic
 from .models import Subject, Lecture, Notes
-from .serializers import SubjectSerializer, LectureSerializer, NotesSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from .permissions import IsOwnerOrReadOnly
-# Create your views here.
+from home.models import User
+from .forms import *
 
 
 # 강의 영상 선택 & 강의 페이지 이동
@@ -63,6 +61,31 @@ class LectureViewSet(ModelViewSet):
 
 
 
-class NotesViewSet(ModelViewSet):
-    queryset = Notes.objects.all()
-    serializer_class = NotesSerializer
+# class NotesViewSet(ModelViewSet):
+#     queryset = Notes.objects.all()
+#     serializer_class = NotesSerializer
+    
+
+    
+# class VideoSelectView(generic.ListView):
+#     template_name: str
+
+# 마이페이지에서 수강강좌 등록
+@login_required
+def AddSubject(request):
+    username= request.GET.get('name','')
+    subject_form = AddSubjectForm()
+    if request.method == "POST":
+        subject_form = AddSubjectForm(request.POST)
+        if subject_form.is_valid():
+            subject = subject_form.save(commit=False)
+            subject.save()
+            return redirect('home/')
+    
+    return render(request, 'home/home.html', {'subject_form':subject_form})
+
+# 강의수강 시작 전 강의분류 선택
+            
+
+
+    
