@@ -1,0 +1,178 @@
+.nav {
+    position: relative;
+    width: 317px;
+    height: 1024px;
+    left: 0px;
+    top: 0px;
+    float: left;
+    background: #FFEFEF;
+}
+
+.nav_title {
+    position: relative;
+    width: 215px;
+    height: 105px;
+    left: 73px;
+    top: 118px;
+
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 54px;
+    line-height: 63px;
+    text-align: center;
+    letter-spacing: -0.02em;
+
+    color: #424777;
+}
+
+#signout_link {
+    position: relative;
+    width: 60px;
+    height: 21px;
+    left: 70px;
+    top: 850px;
+
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+    letter-spacing: -0.02em;
+
+    color: #66666D;
+}
+
+#home_link {
+    position: relative;
+    width: 51px;
+    height: 21px;
+    left: 140px;
+    top: 850px;
+
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+    letter-spacing: -0.02em;
+
+    color: #66666D;
+
+}
+
+
+.main_title {
+    position: relative;
+    /* width: 232px;
+    height: 57px;
+    left: 414px;
+    top: 72px;     */
+
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 56px;
+    /* identical to box height */
+
+    text-align: center;
+    letter-spacing: -0.02em;
+
+    color: #EF87B2;
+}
+
+.memo_title {
+    position: relative;
+    /* width: 261px;
+    height: 35px;
+    left: 337px;
+    top: 197px; */
+
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 33px;
+    text-align: center;
+    letter-spacing: -0.02em;
+
+    color: #424777;
+}
+
+#newMemo {
+    position: relative;
+    width: 255px;
+    height: 281px;
+    left: 80px;
+    top: 70px;
+    float: left;
+
+    background: #FFFFFF;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 28px;
+}
+
+#memo1 {
+    position: relative;
+
+    left: 80px;
+    top: 70px;
+    
+    background: #FFFFFF;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 28px;
+}
+
+#memo2 {
+    position: absolute;
+    width: 255px;
+    height: 281px;
+    left: 1019px;
+    top: 255px;
+
+    background: #FFFFFF;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 28px;
+}
+
+.lecture_title {
+    position: absolute;
+    width: 261px;
+    height: 35px;
+    left: 337px;
+    top: 606px;
+
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 33px;
+    text-align: center;
+    letter-spacing: -0.02em;
+
+    color: #424777;
+}
+
+#lecture1 {
+    position: absolute;
+    width: 398px;
+    height: 81px;
+    left: 460px;
+    top: 675px;
+
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 30px;
+    /* or 150% */
+
+    letter-spacing: -0.02em;
+
+    color: #424777;
+}
+
