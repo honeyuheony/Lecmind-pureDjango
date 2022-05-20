@@ -1,16 +1,33 @@
-<div className="container">
-    <div className="signin">
-        <div className="title">Sign in</div>
-        <div className="input-box">
-            <div id="email_title">email address</div>
-            <input id="email" placeholder="email address"></input>
-        </div>
-        <div className="input-box">
-            <div id="password_title">password</div>
-            <input id="password" placeholder="password"></input>
-        </div>
-        <button className="submit">Submit</button>
-        <button className="signin-with-google">Sign in with Google</button>
-        <a href="#">forgotten your password?</a>
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="signin">
+        <div class="title">Sign in</div>
+
+        
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <div class="input-box">
+                <div id="id_title">id</div>
+                <input class="singin" type="text" name="id" placeholder="id"></input>
+            </div>
+
+
+            <div class="input-box">
+                <div id="password_title">password</div>
+                <input class="singin" type="password" name="password" placeholder="password"></input>
+            </div>
+
+            <input id="submit_signin" type="submit" value="Submit">
+            <button class="signin-with-google">Sign in with Google</button>
+            <a href="#">forgotten your password?</a>
+
+
+        </form>
+
+
+
     </div>
 </div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="title">Sign up
+    <form action="" method="POST" enctype="multipart/form-data" class = "box" >
+        {% csrf_token %}
+        <!-- <table> -->
+            {{regi_form.as_table}}
+        <!-- </table> -->
+        <input type="submit" value="회원가입">
+    </form>
+</div>
+{% endblock %}

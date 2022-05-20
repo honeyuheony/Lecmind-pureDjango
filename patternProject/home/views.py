@@ -1,50 +1,46 @@
-from turtle import title
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
 
-from patternProject.subject.models import Lecture, Subject
+from subject.models import Lecture, Subject
 from .models import User
+from .forms import UserForm
 # Create your views here.
 from django.http import HttpResponse
-from .serializers import UserSerializer
-from rest_framework import generics
-
 
 def home(request):
     return HttpResponse("Hello, world. You're at the Home index.")
     # return render(request, 'chrom.html')
 
-
 def signup(request):
-    user_form = UserCreationForm()
+    user_form = UserForm()
     if request.method == "POST":
-        user_form = UserCreationForm(request.POST)
+        user_form = UserForm(request.POST)
         if user_form.is_valid():
             user = user_form.save()
             return redirect('signin')
+        return redirect('signup')
     return render(request, 'signup.html', {'regi_form':user_form})
 
 
 def signin(request):
-    if str(request.user) != 'AnonymousUser':
-        return redirect('home') # 일단 로그인 시 home으로 가도록 지정
+    # if str(request.user) != 'AnonymousUser':
+    #     return redirect('home') # 일단 로그인 시 home으로 가도록 지정
     
     if request.method == "POST":
-        email = request.POST.get('email','')
+        id = request.POST.get('id','')
         password = request.POST.get('password','')
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(request, id=id, password=password)
         if user is not None:
             login(request, user)
             return redirect('home')
     return render(request, 'signin.html')
 
-
-
 @login_required
 def signout(request):
     logout(request)
-    return redirect('thank')
-
-
+    return redirect('signin')
 
 # 수강과목 리스트
 @login_required
