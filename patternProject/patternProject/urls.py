@@ -38,6 +38,6 @@ urlpatterns = [
     # path(r'api/', include(router.urls)),
     # path(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('', include('home.urls')),
-    path('subject/', include('subject.urls')),
+    path('learning/', include('subject.urls')),
     path('analysis/', include('analysis.urls')),
 ]
