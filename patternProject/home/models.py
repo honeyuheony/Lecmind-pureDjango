@@ -48,10 +48,10 @@ class User(AbstractBaseUser):
     
     
 
-    # 사용자의 username field는 name으로 설정
+    # 사용자의 username field는 id으로 설정
     USERNAME_FIELD = 'id'
     # 필수로 작성해야하는 field
-    REQUIRED_FIELDS = ['name','email']
+    REQUIRED_FIELDS = ['name', 'email']
 
     @property
     def is_staff(self):

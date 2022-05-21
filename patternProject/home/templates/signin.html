@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% load socialaccount %}
 <div class="container">
     <div class="signin">
         <div class="title">Sign in</div>
@@ -20,8 +22,7 @@
             </div>
 
             <input id="submit_signin" type="submit" value="Submit">
-            <button class="signin-with-google">Sign in with Google</button>
-            <a href="#">forgotten your password?</a>
+            <a href="{% provider_login_url 'google' %}">Sign in with Google</a>
 
 
         </form>

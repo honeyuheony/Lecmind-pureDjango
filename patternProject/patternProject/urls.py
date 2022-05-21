@@ -31,6 +31,7 @@ from django.urls import path,include
 # router.register(r'analysis', analysis_view.AnalysisViewSet, basename='analysis')
 # router.register(r'interaction', analysis_view.InteractionViewSet, basename='interaction')
 
+
 urlpatterns = [
     # path(r'', TemplateView.as_view(template_name='index.html'),name='index'),
     # path(r'(learningPage)|(signin)|(timestamp)|(result)|(home)/', TemplateView.as_view(template_name='index.html'), name='route'),
@@ -40,4 +41,5 @@ urlpatterns = [
     path('', include('home.urls')),
     path('subject/', include('subject.urls')),
     path('analysis/', include('analysis.urls')),
+    path('google/', include('allauth.urls')),
 ]

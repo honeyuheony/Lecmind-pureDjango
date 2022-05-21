@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     'home.apps.HomeConfig',
     'subject.apps.SubjectConfig',
@@ -44,6 +45,14 @@ INSTALLED_APPS = [
     'chrome.apps.ChromConfig',
     'rest_framework',
     'corsheaders',
+    
+     #allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    #provider 구글 페이스북 카톡 깃허브 등 소셜로그인 제공업체
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -120,7 +129,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = 'home.User'
-
+# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'id'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -145,10 +158,34 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# Pagination 페이지네이션 사용
-REST_FRAMEWORK ={
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ],
+# # Pagination 페이지네이션 사용
+# REST_FRAMEWORK ={
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.BasicAuthentication',
+#         'rest_framework.authentication.SessionAuthentication',
+#     ],
+# }
+
+AUTHENTICATION_BACKENDS = (
+    #Needed to login by username in Django admin, regardless of 'allauth'
+    'django.contrib.auth.backends.ModelBackend',
+    
+    # 'allauth' specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'email',
+            # 'id',
+            # 'name',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
 }
