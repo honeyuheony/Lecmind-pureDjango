@@ -9,14 +9,13 @@ class Subject(models.Model):
     )
     pf_name = models.CharField(null=True, blank=True, max_length=20)
     create_date = models.DateField(auto_now_add=True)
-    update_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
     
     def __str__(self):
         return self.name
 
 class Lecture(models.Model):
     choice_state = (
-        ('before', 'before'),
         ('ongoing', 'ongoing'),
         ('completed','completed')
     )
@@ -24,15 +23,15 @@ class Lecture(models.Model):
         Subject, on_delete=models.CASCADE, related_name='subject_lecture')
     name = models.CharField(max_length=30)
     degree = models.IntegerField(null=True, blank=True)
-    create_date = models.DateField(auto_now_add=True)
-    complet_date = models.DateField(auto_now_add=True)
-    lecture_time = models.CharField(max_length=20)
-    learning_time = models.CharField(max_length=20)
+    create_date = models.DateTimeField(auto_now_add=True)
+    complet_date = models.DateTimeField(null=True, blank=True)
+    lecture_time = models.CharField(null=True, blank=True, max_length=20)
+    learning_time = models.CharField(max_length=20, null=True, blank=True)
     state = models.CharField(max_length=20, choices=choice_state)
-    url = models.URLField(primary_key=True, max_length=200)
+    video_id = models.CharField(primary_key=True, max_length=200)
     
     def __str__(self):
-        return self.url
+        return self.video_id
 
 class Notes(models.Model):
     lecture = models.ForeignKey(

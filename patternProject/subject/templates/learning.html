@@ -1,6 +1,9 @@
 <div className="container">
     <div className="Video">
-        <h1>Video</h1>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{lecture.video_id}}"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
     </div>
 </div>
 <div class="container">
@@ -11,7 +14,7 @@
         </div>
         <div class="content">
             <textarea class="content_input" id="content_input" rows="19" maxlength="1000" minlength="10"
-                placeholder="작성할 내용을 입력하세요."></textarea>
+                placeholder="작성할 내용을 입력하세요.">{{lecture.name}}</textarea>
         </div>
         <div class="mycam">
             <img src="http://127.0.0.1:8000/chrom/detectme" style="width: 200px;" />

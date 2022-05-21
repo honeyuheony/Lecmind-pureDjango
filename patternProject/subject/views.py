@@ -7,7 +7,79 @@ from .models import Subject, Lecture, Notes
 from home.models import User
 from .forms import *
 
+# 마이페이지에서 수강강좌 등록
+@login_required
+def AddSubject(request):
+    username= request.GET.get('name','')
+    subject_form = AddSubjectForm()
+    if request.method == "POST":
+        subject_form = AddSubjectForm(request.POST)
+        if subject_form.is_valid():
+            subject = subject_form.save(commit=False)
+            subject.save()
 
+            return redirect('home/')
+    
+    return render(request, 'home/home.html', {'subject_form':subject_form})
+
+
+# 학습 동영상 선택
+# 1. 과목방 생성 or 선택 ui를 통해 과목방 name post
+# 2. 강의 url post
+@login_required
+def learning(request):
+    if request.method == "POST":
+        sb, create = Subject.objects.update_or_create(
+            student = request.user,
+            name = request.POST.get('subject_name')
+        )
+        sb.save()
+        # lecture 생성, 이미 있으면 기존 학습 데이터 불러오기
+        lec, create = Lecture.objects.update_or_create(
+            subject = sb,
+            video_id = request.POST.get('url').split('=')[1]
+        )
+        if lec.degree == None:
+            lec.degree = Lecture.objects.filter(subject = sb).count() + 1
+        if lec.name == None:
+            lec.name = str(sb.name) + '_' + str(lec.degree)
+        if lec.lecture_time == None:
+            lec.lecture_time = request.POST.get('video_length')
+        lec.state = 'ongoing'
+        lec.save()
+    return render(request, 'learning.html', {'lecture':lec})
+
+@login_required
+def learning_test(request, video_id = None):
+    if request.method == "POST":
+        sb, create = Subject.objects.update_or_create(
+            student = request.user.id,
+            name = request.POST.get('name')
+        )
+        sb.save()
+        # lecture 생성, 이미 있으면 기존 학습 데이터 불러오기
+        lec, create = Lecture.objects.update_or_create(
+            student = request.user.id,
+            subject = sb,
+            url = request.Post.get('video_id')
+        )
+        if lec.degree == None:
+            lec.degree = Lecture.objects.count(subject = sb) + 1
+        if lec.name == None:
+            lec.name = str(sb.name) + '_' + str(lec.degree)
+        if lec.lecture_time == None:
+            lec.lecture_time = request.Post.get('video_length')
+        lec.state = 'ongoing'
+        lec.save()
+    else:
+        lec = get_object_or_404(Lecture, pk = video_id)
+    return render(request, 'learning.html', {'lecture':lec})
+
+@login_required
+def videotest(request):
+
+    return render(request, 'videotest.html')
+        
 # # 강의 영상 선택 & 강의 페이지 이동
 # @api_view(['POST'])
 # def video_select():
@@ -70,19 +142,7 @@ from .forms import *
 # class VideoSelectView(generic.ListView):
 #     template_name: str
 
-# 마이페이지에서 수강강좌 등록
-@login_required
-def AddSubject(request):
-    username= request.GET.get('name','')
-    subject_form = AddSubjectForm()
-    if request.method == "POST":
-        subject_form = AddSubjectForm(request.POST)
-        if subject_form.is_valid():
-            subject = subject_form.save(commit=False)
-            subject.save()
-            return redirect('home/')
-    
-    return render(request, 'home/home.html', {'subject_form':subject_form})
+
 
 # 강의수강 시작 전 강의분류 선택
             
