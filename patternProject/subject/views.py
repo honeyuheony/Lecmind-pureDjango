@@ -7,22 +7,6 @@ from .models import Subject, Lecture, Notes
 from home.models import User
 from .forms import *
 
-# 마이페이지에서 수강강좌 등록
-@login_required
-def AddSubject(request):
-    username= request.GET.get('name','')
-    subject_form = AddSubjectForm()
-    if request.method == "POST":
-        subject_form = AddSubjectForm(request.POST)
-        if subject_form.is_valid():
-            subject = subject_form.save(commit=False)
-            subject.save()
-
-            return redirect('home/')
-    
-    return render(request, 'home/home.html', {'subject_form':subject_form})
-
-
 # 학습 동영상 선택
 # 1. 과목방 생성 or 선택 ui를 통해 과목방 name post
 # 2. 강의 url post
@@ -77,7 +61,6 @@ def learning_test(request, video_id = None):
 
 @login_required
 def videotest(request):
-
     return render(request, 'videotest.html')
         
 # # 강의 영상 선택 & 강의 페이지 이동
