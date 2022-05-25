@@ -38,7 +38,7 @@
                 placeholder="작성할 내용을 입력하세요.">{{lecture.name}}</textarea>
         </div>
         <div class="mycam">
-            <!-- <img src="http://127.0.0.1:8000/chrome/detectme" style="width: 200px;" /> -->
+            <img src="http://127.0.0.1:8000/chrome/detectme" style="width: 200px;" />
         </div>
         <!-- {/* <span class="textarea_count">0/1000 (최대 1000자)</span> */} -->
     </form>
@@ -96,7 +96,7 @@
     var temp_time = 0
     function onPlayerStateChange(event) {
         end = new Date()
-        temp_time = end - start
+        temp_time = (end - start) / 1000
         if (event.data == YT.PlayerState.PLAYING && !done) {
             if (init == false) {
                 init = true
@@ -121,8 +121,8 @@
     // 재생 or 정지
     function play() {
         end = new Date()
-        temp_time = end - start
-        if (player.getPlayerState() == 1) {
+        temp_time = (end - start) / 1000
+        if (player.getPlayerState() == 2) {
             run_time += temp_time
         }
         else {
@@ -168,8 +168,8 @@
     // 앞으로가기
     function fast_forward() {
         end = new Date()
-        temp_time = end - start
-        if (player.getPlayerState() == 1) {
+        temp_time = (end - start) / 1000
+        if (player.getPlayerState() == 2) {
             run_time += temp_time
         }
         else {
@@ -196,8 +196,8 @@
     // 뒤로가기
     function rewind() {
         end = new Date()
-        temp_time = end - start
-        if (player.getPlayerState() == 1) {
+        temp_time = (end - start) / 1000
+        if (player.getPlayerState() == 2) {
             run_time += temp_time
         }
         else {
