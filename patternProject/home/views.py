@@ -37,6 +37,14 @@ def signin(request):
             return redirect('home')
     return render(request, 'signin.html')
 
+
+def detail(request):
+    return render(request, 'detail.html')
+
+
+
+
+
 @login_required
 def signout(request):
     logout(request)

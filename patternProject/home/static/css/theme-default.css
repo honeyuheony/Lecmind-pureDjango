@@ -984,13 +984,13 @@ html:not(.layout-menu-collapsed) .bg-menu-theme .menu-inner .menu-item .menu-lin
 /* 타임라인 */
 
 .timeline {
-	width:90%;
-	height: 20px;
-	list-style: none;
-	text-align: justify;
-	margin: 80px auto;
-	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,0)), color-stop(45%, rgba(255,255,255,0)), color-stop(51%, rgba(191,128,11,1)), color-stop(57%, rgba(255,255,255,0)), color-stop(100%, rgba(255,255,255,0)));
-	background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 45%, #b5b7bb 51%, rgba(255,255,255,0) 57%, rgba(255,255,255,0) 100%);
+    width: 90%;
+    height: 20px;
+    list-style: none;
+    text-align: justify;
+    margin: 80px auto;
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(45%, rgba(255, 255, 255, 0)), color-stop(51%, rgba(191, 128, 11, 1)), color-stop(57%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(255, 255, 255, 0)));
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 45%, #b5b7bb 51%, rgba(255, 255, 255, 0) 57%, rgba(255, 255, 255, 0) 100%);
 }
 
 .timeline:after {
@@ -1000,40 +1000,42 @@ html:not(.layout-menu-collapsed) .bg-menu-theme .menu-inner .menu-item .menu-lin
 }
 
 .timeline li {
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	background: #F2BB13;
-	text-align: center;
-	line-height: 1.2;
-	position: relative;
-	border-radius: 50%;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: #F2BB13;
+    text-align: center;
+    line-height: 1.2;
+    position: relative;
+    border-radius: 50%;
 }
+
 .timeline li:before {
-	display: inline-block;
-	content: attr(time-spot);
-	font-size: 15px;
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
+    display: inline-block;
+    content: attr(time-spot);
+    font-size: 15px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 
-#start-spot{
-	width: 3px;
-	height: 20px;
-	background: #b5b7bb;
-    border-radius: 0%;
-	text-align: center;
-	right: 4.2vh;
-}
-#end-spot{
+#start-spot {
     width: 3px;
-	height: 20px;
-	background: #b5b7bb;
+    height: 20px;
+    background: #b5b7bb;
     border-radius: 0%;
-	text-align: center;
-	/* left: 100%; */
+    text-align: center;
+    right: 4.2vh;
+}
+
+#end-spot {
+    width: 3px;
+    height: 20px;
+    background: #b5b7bb;
+    border-radius: 0%;
+    text-align: center;
+    /* left: 100%; */
 }
 
 /* nth-child선택기 이용해서 구간선정, 색 다르게 */
@@ -1048,11 +1050,35 @@ html:not(.layout-menu-collapsed) .bg-menu-theme .menu-inner .menu-item .menu-lin
 
 /* before : 시간대 넣을 자리 */
 .timeline li:nth-child(odd):before {
-	top: -25px;
+    top: -25px;
     /* background: #f14d4d; */
 }
 
 .timeline li:nth-child(even):before {
-	top: -25px;
+    top: -25px;
     /* background: #1f82df; */
+}
+
+
+
+/* 전체분석통계 */
+/* #chart2-card{
+    min-height:30vh; 
+    min-width:30vw;
+}
+#chart1-card{
+    min-height:35vh; 
+    min-width:20vw;
+} */
+
+#myChartTwo {
+    height:30vh; 
+    width:30vw;
+    /* display: flex; */
+}
+
+#myChartTwo {
+    height:35vh; 
+    width:20vw;
+    /* display: flex; */
 }

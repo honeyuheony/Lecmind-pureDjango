@@ -9,6 +9,7 @@
 </script>
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+<link rel=""
 
 <!DOCTYPE html>
 
@@ -48,6 +49,9 @@
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+
+    <!-- chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js" integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <!-- Custom notification for demo -->
     <!-- beautify ignore:end -->
@@ -194,125 +198,141 @@
 
 
 
-                            <!-- Total Revenue -->
-                            <div class="order-2 order-md-3 order-lg-2 mb-4">
+                            <!-- 분석차트 -->
+                            <div class="col-md-5">
                                 <div class="card">
-                                    <div class="row row-bordered g-0">
-                                        <div class="col-md-9">
-                                            <h5 class="card-header m-0 me-2 pb-3">타임스탬프</h5>
-
-                                            <ul class="timeline">
-                                                <li id="start-spot"></li>
-                                                <li time-spot="20:17"></li>
-                                                <li time-spot="20:18"></li>
-                                                <li time-spot="20:19"></li>
-                                                <li time-spot="20:20"></li>
-                                                <li time-spot="20:21"></li>
-                                                <li time-spot="20:17"></li>
-                                                <li id="end-spot"></li>
-
-                                            </ul>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="card-body">
-                                                <div class="text-center">
-                                                    <div class="text-center fw-semibold pt-3 mb-2">강의정보</div>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-sm btn-outline-primary dropdown-toggle"
-                                                            type="button" id="growthReportId" data-bs-toggle="dropdown"
-                                                            aria-haspopup="true" aria-expanded="false">
-                                                            2022
-                                                        </button>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id="growthChart"></div>
-
-
-                                            <div
-                                                class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
-                                                <div class="d-flex">
-                                                    <div class="me-2">
-                                                        <span class="badge bg-label-primary p-2"><i
-                                                                class="bx bx-dollar text-primary"></i></span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="d-flex">
-                                                    <div class="me-2">
-                                                        <span class="badge bg-label-info p-2"><i
-                                                                class="bx bx-wallet text-info"></i></span>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <h5 class="card-header m-0 me-2 pb-3">강의별 평균 수강시간</h5>
+                                        <canvas id="myChartOne">
+                                        </canvas>
                                 </div>
                             </div>
-                            <!--/ Total Revenue -->
-                        </div>
-
-                    </div>
-                    <!-- / Content -->
-
-
-
-
-
-                    <!-- Footer -->
-                    <footer class="content-footer footer bg-footer-theme">
-                        <div
-                            class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                            <div class="mb-2 mb-md-0">
-                                © 2022. Academic-ENFP Co. all rights reserved.
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <h5 class="card-header">강의별 복습추천구간 비율</h5>
+                                        <canvas id="myChartTwo">
+                                        </canvas>
+                                </div>
                             </div>
+
+
+
+
                         </div>
-                    </footer>
-                    <!-- / Footer -->
+
+
+
+                        <!-- / Content -->
+
+
+
+
+
+                        <!-- Footer -->
+                        <footer class="content-footer footer bg-footer-theme">
+                            <div
+                                class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                                <div class="mb-2 mb-md-0">
+                                    © 2022. Academic-ENFP Co. all rights reserved.
+                                </div>
+                            </div>
+                        </footer>
+                        <!-- / Footer -->
+                    </div>
+                    <!-- Content wrapper -->
                 </div>
-                <!-- Content wrapper -->
+                <!-- / Layout page -->
             </div>
-            <!-- / Layout page -->
+
+
+
+            <!-- Overlay -->
+            <div class="layout-overlay layout-menu-toggle"></div>
+
+
         </div>
+        <!-- / Layout wrapper -->
 
 
 
-        <!-- Overlay -->
-        <div class="layout-overlay layout-menu-toggle"></div>
+        <!-- 차트 스크립트 -->
+        <script>
+            let myChartOne = document.getElementById('myChartOne').getContext('2d');
+            let myChartTwo = document.getElementById('myChartTwo').getContext('2d');
+
+            let barChart = new Chart(myChartOne,{
+                type : 'bar',
+                data : {
+                    labels : ['객체지향개발론', '운영체제', '알고리즘 및 실습', '컴퓨터네트워크'],
+                    datasets : [{
+                        label : '강의별 평균 수강시간',
+                        data:[
+                            10,
+                            50,
+                            90,
+                            20
+                        ],
+                        backgroundColor:[
+                            '#FBF46D',
+                            '#B4FE98',
+                            '#77E4D4',
+                            '#998CEB'
+                        ]
+                    }]
+                },
+                options:{
+                    responsive: false,
+                }
+            });
+
+            let barChartTwo = new Chart(myChartTwo,{
+                type : 'doughnut',
+                data : {
+                    labels : ['객체지향개발론', '운영체제', '알고리즘 및 실습', '컴퓨터네트워크'],
+                    datasets : [{
+                        label : '강의별 복습추천구간 비율',
+                        data:[
+                            20,
+                            10,
+                            60,
+                            35
+                        ],
+                        backgroundColor:[
+                            '#FBF46D',
+                            '#B4FE98',
+                            '#77E4D4',
+                            '#998CEB'
+                        ]
+                    }]
+                },
+                options:{
+                    responsive: false,
+                }
+            });
+
+        </script>
 
 
-    </div>
-    <!-- / Layout wrapper -->
-
-
-
-
-
-
-
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <!-- <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+        <!-- Core JS -->
+        <!-- build:js assets/vendor/js/core.js -->
+        <!-- <script src="../assets/vendor/libs/jquery/jquery.js"></script>
     <script src="../assets/vendor/libs/popper/popper.js"></script>
     <script src="../assets/vendor/js/bootstrap.js"></script>
     <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
     <script src="../assets/vendor/js/menu.js"></script> -->
-    <!-- endbuild -->
+        <!-- endbuild -->
 
-    <!-- Vendors JS -->
-    <!-- <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script> -->
+        <!-- Vendors JS -->
+        <!-- <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script> -->
 
-    <!-- Main JS -->
-    <!-- <script src="../assets/js/main.js"></script> -->
+        <!-- Main JS -->
+        <!-- <script src="../assets/js/main.js"></script> -->
 
-    <!-- Page JS -->
-    <!-- <script src="../assets/js/dashboards-analytics.js"></script> -->
+        <!-- Page JS -->
+        <!-- <script src="../assets/js/dashboards-analytics.js"></script> -->
 
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
+        <!-- Place this tag in your head or just before your close body tag. -->
+        <!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
 
 </body>
 
