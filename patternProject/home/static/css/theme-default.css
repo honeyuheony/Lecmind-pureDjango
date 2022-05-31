@@ -1029,6 +1029,12 @@ html:not(.layout-menu-collapsed) .bg-menu-theme .menu-inner .menu-item .menu-lin
     right: 4.2vh;
 }
 
+#start-spot::before{
+    content: attr(time-start);
+    top: 25px;
+}
+
+
 #end-spot {
     width: 3px;
     height: 20px;
@@ -1036,6 +1042,11 @@ html:not(.layout-menu-collapsed) .bg-menu-theme .menu-inner .menu-item .menu-lin
     border-radius: 0%;
     text-align: center;
     /* left: 100%; */
+}
+
+#end-spot::before{
+    content: attr(time-end);
+    top: 25px;
 }
 
 /* nth-child선택기 이용해서 구간선정, 색 다르게 */
@@ -1070,15 +1081,19 @@ html:not(.layout-menu-collapsed) .bg-menu-theme .menu-inner .menu-item .menu-lin
     min-height:35vh; 
     min-width:20vw;
 } */
-
-#myChartTwo {
-    height:30vh; 
-    width:30vw;
-    /* display: flex; */
+/* 
+#myChartOne {
+    height:35vh; 
+    width:36vw;
+    display: flex;
 }
 
 #myChartTwo {
     height:35vh; 
     width:20vw;
-    /* display: flex; */
-}
+    display: flex;
+} */
+
+canvas {
+    display: inline;
+ }

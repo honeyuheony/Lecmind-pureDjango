@@ -204,14 +204,14 @@
                                         <div class="col-md-9">
                                             <h5 class="card-header m-0 me-2 pb-3">타임스탬프</h5>
                                             <ul class="timeline">
-                                                <li id="start-spot"></li>
+                                                <li id="start-spot" time-start="00:00"></li>
                                                 <li time-spot="20:17"></li>
                                                 <li time-spot="20:18"></li>
                                                 <li time-spot="20:19"></li>
                                                 <li time-spot="20:20"></li>
                                                 <li time-spot="20:21"></li>
                                                 <li time-spot="20:17"></li>
-                                                <li id="end-spot"></li>
+                                                <li id="end-spot" time-end="53:26"></li>
                                             </ul>
                                         </div>
                                         <div class="col-md-3">
@@ -226,7 +226,6 @@
                                                         </button>
                                                         <div class="lectuer-info">
                                                             <p>강의제목 :</p>
-                                                            <p>전체 시간대비 소요시간: (차트)</p>
                                                             <p>멈춤 횟수: </p>
                                                             <p>되감기 횟수: </p>
                                                             <p>시청 속도: </p>
@@ -237,29 +236,38 @@
                                             </div>
                                             <div id="growthChart"></div>
 
-
-                                            <div
-                                                class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
-                                                <div class="d-flex">
-                                                    <div class="me-2">
-                                                        <span class="badge bg-label-primary p-2"><i
-                                                                class="bx bx-dollar text-primary"></i></span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="d-flex">
-                                                    <div class="me-2">
-                                                        <span class="badge bg-label-info p-2"><i
-                                                                class="bx bx-wallet text-info"></i></span>
-                                                    </div>
-
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!--/ Total Revenue -->
+
+                            <!-- detail 차트 -->
+                            <div class="order-3 order-md-3 col-md-12">
+                                <div class="card">
+                                    <h5 class="card-header">분석차트</h5>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <canvas id="chartOne">
+                                            </canvas>
+                                        </div>
+                                        <div class="col-6">
+                                            <canvas id="chartTwo">
+
+                                            </canvas>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- <div class="chartOne">
+                                        
+                                    </div>
+                                    <div class="chartTwo">
+                                        
+                                    </div> -->
+                                </div>
+                            </div>
+
+
                         </div>
 
                     </div>
@@ -299,6 +307,83 @@
 
 
 
+    <!-- 차트 스크립트 -->
+    <script>
+        let chartOne = document.getElementById('chartOne').getContext('2d');
+        let chartTwo = document.getElementById('chartTwo').getContext('2d');
+
+       
+
+        let barChart = new Chart(chartOne, {
+            type: 'line',
+            data: {
+                labels: ['1차시', '2차시', '3차시', '4차시', '5차시', '6차시'],
+                datasets: [{
+                    label: '차시 별 복습추천구간 빈도수',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+					'rgba(54, 162, 235, 0.2)',
+					'rgba(255, 206, 86, 0.2)',
+					'rgba(75, 192, 192, 0.2)',
+					'rgba(153, 102, 255, 0.2)',
+					'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+					'rgba(255, 99, 132, 1)',
+					'rgba(54, 162, 235, 1)',
+					'rgba(255, 206, 86, 1)',
+					'rgba(75, 192, 192, 1)',
+					'rgba(153, 102, 255, 1)',
+					'rgba(255, 159, 64, 1)'
+				],
+				borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: false,
+                layout: {
+                    padding: {
+                        left: 50,
+                        bottom: 20
+                    }
+                },
+            }
+        });
+
+
+        var cmpTimeChart ={
+            labels: ['1차시', '2차시', '3차시', '4차시', '5차시', '6차시'],
+            datasets:[{
+                label: '강의시간',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                '#fabed7'
+                ],
+            },{
+                label: '수강시간',
+                data: [20, 9, 12, 6, 3, 5],
+                backgroundColor: [
+                '#f768a1'
+                ],
+            }]
+        };
+        let barChartTwo = new Chart(chartTwo, {
+            type: 'bar',
+            data: cmpTimeChart,
+            options: {
+                responsive: false,
+                layout: {
+                    padding: {
+                        left: 50,
+                        bottom: 20
+                    }
+                },
+            }
+        });
+
+        
+    </script>
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
