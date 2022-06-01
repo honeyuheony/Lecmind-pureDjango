@@ -1,8 +1,8 @@
 let chartOne = document.getElementById('chartOne').getContext('2d');
 let chartTwo = document.getElementById('chartTwo').getContext('2d');
 
-let timelines = document.getElementById('timelines');
-var ctx = timelines.getContext('2d');
+// let timelines = document.getElementById('timelines');
+// var ctx = timelines.getContext('2d');
 
 
 
@@ -83,18 +83,18 @@ function makeSpot() {
 }
 
 
-// 타임스탬프
-ctx.beginPath();
-ctx.moveTo(0,0);
-ctx.lineTo(600,0);
-ctx.stroke();
+// // 타임스탬프
+// ctx.beginPath();
+// ctx.moveTo(0,0);
+// ctx.lineTo(600,0);
+// ctx.stroke();
 
-//start지점
-ctx.moveTo(40,40);
-ctx.lineTo(40,60);
-ctx.stroke();
+// //start지점
+// ctx.moveTo(40,40);
+// ctx.lineTo(40,60);
+// ctx.stroke();
 
-//end지점
-ctx.moveTo(600,40);
-ctx.lineTo(600,60);
-ctx.stroke();
+// //end지점
+// ctx.moveTo(600,40);
+// ctx.lineTo(600,60);
+// ctx.stroke();
