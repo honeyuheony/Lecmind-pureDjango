@@ -1070,7 +1070,19 @@ html:not(.layout-menu-collapsed) .bg-menu-theme .menu-inner .menu-item .menu-lin
     /* background: #1f82df; */
 }
 
+.start-line{
+    border-left: solid #b5b7bb;
+    height: 20px;
+    left: 6vh;
+    position: absolute;
+}
 
+.end-line{
+    border-left: solid #b5b7bb;
+    height: 20px;
+    right: 6.2vh;
+    position: absolute;
+}
 
 /* 전체분석통계 */
 /* #chart2-card{
