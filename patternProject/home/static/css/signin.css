@@ -178,6 +178,34 @@ a {
 	border-color: #FFFFFF;
 }
 
+/* go to singup */
+#GoSignup {
+	border-radius: 10px;
+	border: 1px solid #fce4e4;
+	background-color: #fce4e4;
+	color: #333232;
+	width: 200px;
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	transition: transform 80ms ease-in;
+}
+
+#GoSignup:active {
+	transform: scale(0.95);
+}
+
+#GoSignup:focus {
+	outline: none;
+}
+
+#GoSignup.ghost {
+	background-color: transparent;
+	border-color: #FFFFFF;
+}
+
 form {
 	background-color: #FFFFFF;
 	display: flex;
