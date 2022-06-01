@@ -41,5 +41,6 @@ urlpatterns = [
     path('', include('home.urls')),
     path('learning/', include('subject.urls')),
     path('analysis/', include('analysis.urls')),
+    path('chrome/', include('chrome.urls')),
     path('google/', include('allauth.urls')),
 ]

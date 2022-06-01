@@ -1,42 +1,35 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import api_view
 from django.http import HttpResponse
 from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Analysis, Interaction
+from .models import Analysis, Interaction, Lecture
 from .serializers import AnalysisSerializer, InteractionSerializer
 
 # Create your views here.
 def analysis(request):
     return HttpResponse("Hello, world. You're at the analysis.")
-# 학습 일시정지 기록
-@api_view(['POST'])
-def pause():
-    pass
+# 학습 중 이벤트 기록
+@csrf_exempt
+def lecture_event(request):
+    lec = get_object_or_404(Lecture, pk=request.POST.get('lecture'))
+    Interaction.objects.create(
+        lecture = lec,
+        interaction_type = request.POST.get('interaction_type'),
+        interaction_time_real = request.POST.get('interaction_time_real'),
+        interaction_time_lecture = request.POST.get('interaction_time_lecture')
+    )
+    return redirect(f"/learning/{request.POST.get('lecture')}")
 
-# 학습 일시정지 해제 기록
-@api_view(['POST'])
-def redo():
-    pass
+# class AnalysisViewSet(viewsets.ModelViewSet):
+#     queryset = Analysis.objects.all()
+#     serializer_class = AnalysisSerializer
 
-# 학습 영상 넘기기 기록
-@api_view(['POST'])
-def fast_forward():
-    pass
-
-# 학습 영상 뒤로가기 기록
-@api_view(['POST'])
-def rewind():
-    pass
-
-class AnalysisViewSet(viewsets.ModelViewSet):
-    queryset = Analysis.objects.all()
-    serializer_class = AnalysisSerializer
-
-class InteractionViewSet(viewsets.ModelViewSet):
-    queryset = Interaction.objects.all()
-    serializer_class = InteractionSerializer
+# class InteractionViewSet(viewsets.ModelViewSet):
+#     queryset = Interaction.objects.all()
+#     serializer_class = InteractionSerializer
