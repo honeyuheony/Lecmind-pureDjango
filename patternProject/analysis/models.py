@@ -28,4 +28,4 @@ class Interaction(models.Model):
     interaction_time_lecture = models.CharField(max_length=20)
     
     def __str__(self):
-        return self.interaction_idx
+        return str(self.interaction_idx)
