@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'SLEIGothicTTF';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SLEIGothicTTF.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .layout-navbar-fixed .layout-wrapper:not(.layout-horizontal) .layout-page:before {
     content: "";
     width: 100%;
@@ -1013,6 +1020,7 @@ html:not(.layout-menu-collapsed) .bg-menu-theme .menu-inner .menu-item .menu-lin
 .timeline li:before {
     display: inline-block;
     content: attr(time-spot);
+    font-family: 'SLEIGothicTTF';
     font-size: 15px;
     position: absolute;
     left: 50%;
@@ -1108,4 +1116,8 @@ html:not(.layout-menu-collapsed) .bg-menu-theme .menu-inner .menu-item .menu-lin
 
 canvas {
     display: inline;
- }
+}
+
+body{
+    font-family: 'SLEIGothicTTF';
+}

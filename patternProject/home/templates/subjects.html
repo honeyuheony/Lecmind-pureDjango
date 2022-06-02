@@ -9,7 +9,8 @@
 </script>
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
-<link rel="" <!DOCTYPE html>
+
+<!DOCTYPE html>
 
 <!-- =========================================================
 * Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
@@ -47,7 +48,7 @@
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-
+    
     <!-- chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js" integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
@@ -56,14 +57,15 @@
 
 </head>
 
-<body></body>
+<body>
+
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar  ">
         <div class="layout-container">
             <!-- Menu -->
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo ">
-                    <a href="home.html" class="app-brand-link">
+                    <a href="home" class="app-brand-link">
                         <span class="app-brand-logo demo">
                             <!-- 로고자리 -->
                         </span>
@@ -74,14 +76,14 @@
 
                     <!-- Dashboard -->
                     <li class="menu-item active">
-                        <a href="home.html" class="menu-link">
+                        <a href="/" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">Home</div>
                         </a>
                     </li>
 
                     <li class="menu-item active">
-                        <a href="login.html" class="menu-link">
+                        <a href="signin" class="menu-link">
                             <!--로그아웃 | 로그인-->
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">Login</div>
@@ -134,36 +136,17 @@
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
-                            <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+                            <div class="col-8 order-0 mb-4">
                                 <div class="card">
                                     <div class="d-flex align-items-end row">
                                         <div class="col-sm-7">
                                             <div class="card-body">
-                                                <h5 class="card-title text-primary">총 학습시간</h5>
-                                                <p class="total_time">
-                                                    {{current_lecture.lecture_time}}
-                                                </p>
+                                                
+                                                <h5 class="card-title text-primary">강의제목</h5>
                                                 <p class="mb-4">You have done <span class="fw-bold">72%</span> more
                                                     sales today. Check your new badge in your profile.</p>
 
-                                                <a href="javascript:;" class="btn btn-sm btn-outline-primary">View
-                                                    Badges</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
-                                <div class="card">
-                                    <div class="d-flex align-items-end row">
-                                        <div class="col-sm-7">
-                                            <div class="card-body">
-                                                <h5 class="card-title text-primary">학습분석</h5>
-                                                <p class="mb-4">You have done <span class="fw-bold">72%</span> more
-                                                    sales today. Check your new badge in your profile.</p>
-
-                                                <a href="javascript:;" class="btn btn-sm btn-outline-primary">View
-                                                    Badges</a>
+                                                
                                             </div>
                                         </div>
 
@@ -179,7 +162,7 @@
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 me-3">
                                                         <div class="avatar avatar-online">
-                                                            <!-- 이미지 -->
+                                                            
                                                         </div>
                                                     </div>
 
@@ -197,142 +180,64 @@
 
 
 
-                            <!-- 분석차트 -->
-                            <div class="col-md-5">
+                            <!-- 세부강의 -->
+                            {% for lecture in lecture_info %}
+                            <div class="order-2 col-md-3 mb-4">
                                 <div class="card">
-                                    <h5 class="card-header m-0 me-2 pb-3">강의별 평균 수강시간</h5>
-                                    <!-- <p>실제강의시간 / 학습시간 비율의 평균값</p> -->
-                                    <canvas id="myChartOne">
-
-                                    </canvas>
+                                    <h3></h3>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <h5 class="card-header">강의별 복습추천구간 비율</h5>
-                                    <canvas id="myChartTwo">
-                                    </canvas>
-                                </div>
-                            </div>
+                            <!--/ 세부강의 -->
 
-
+                    
 
 
                         </div>
 
-
-
-                        <!-- / Content -->
-
-
-
-
-
-                        <!-- Footer -->
-                        <footer class="content-footer footer bg-footer-theme">
-                            <div
-                                class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">
-                                    © 2022. Academic-ENFP Co. all rights reserved.
-                                </div>
-                            </div>
-                        </footer>
-                        <!-- / Footer -->
                     </div>
-                    <!-- Content wrapper -->
+                    <!-- / Content -->
+
+
+
+
+
+                    <!-- Footer -->
+                    <footer class="content-footer footer bg-footer-theme">
+                        <div
+                            class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                            <div class="mb-2 mb-md-0">
+                                © 2022. Academic-ENFP Co. all rights reserved.
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- / Footer -->
                 </div>
-                <!-- / Layout page -->
+                <!-- Content wrapper -->
             </div>
-
-
-
-            <!-- Overlay -->
-            <div class="layout-overlay layout-menu-toggle"></div>
-
-
+            <!-- / Layout page -->
         </div>
-        <!-- / Layout wrapper -->
+
+
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+
+
+    </div>
+    <!-- / Layout wrapper -->
 
 
 
 
-        <!-- Core JS -->
-        <!-- <script src="../static/js/home.js" type="text/javascript"></script> -->
-        <script>
-            let myChartOne = document.getElementById('myChartOne').getContext('2d');
-            let myChartTwo = document.getElementById('myChartTwo').getContext('2d');
 
-            var lecture = [
-                {% for lecture in lecture_info %} {
-                    lecture_time : "{{lecture.lecture_time}}"
-                    // 변수명 : 탬플릿변수 이렇게 정의하면 갖다쓸수있아 문자열로 포장해서 써야겠다 저건
-                    
-                },
-                {% endfor %}
-            ]
-            console.log(lecture)
 
-            /*var lec = [
-                {% for lec in all_lecture %} {
-                    lecture_degree : {{lec.degree}}
-                },
-                {% endfor %}
-            ]
-            console.log(lec)*/
+    
 
-            let barChart = new Chart(myChartOne, {
-                type: 'bar',
-                data: {
-                    labels: ['객체지향개발론', '운영체제', '알고리즘 및 실습', '컴퓨터네트워크'],
-                    datasets: [{
-                        label: '강의별 평균 수강시간',
-                        data: [
-                            10,
-                            50,
-                            90,
-                            20
-                        ],
-                        backgroundColor: [
-                            '#FBF46D',
-                            '#B4FE98',
-                            '#77E4D4',
-                            '#998CEB'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: false,
-                }
-            });
-
-            let barChartTwo = new Chart(myChartTwo, {
-                type: 'doughnut',
-                data: {
-                    labels: ['객체지향개발론', '운영체제', '알고리즘 및 실습', '컴퓨터네트워크'],
-                    datasets: [{
-                        label: '강의별 복습추천구간 비율',
-                        data: [
-                            20,
-                            10,
-                            60,
-                            35
-                        ],
-                        backgroundColor: [
-                            '#FBF46D',
-                            '#B4FE98',
-                            '#77E4D4',
-                            '#998CEB'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: false,
-                }
-            });
-        </script>
-
-        <!-- Place this tag in your head or just before your close body tag. -->
-        <!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
+    <!-- Core JS -->
+    <!-- <script src="../static/js/detail.js" type="text/javascript"></script> -->
+    
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
 
 </body>
 

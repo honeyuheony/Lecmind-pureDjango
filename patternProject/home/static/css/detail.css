@@ -1,0 +1,27 @@
+
+@font-face {
+    font-family: 'SLEIGothicTTF';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SLEIGothicTTF.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.total_learn{
+    font-family: 'SLEIGothicTTF';
+    font-size: 60px;
+    font-weight:bold;
+    text-align:center;
+}
+
+.total_learn_title{
+    font-family: 'SLEIGothicTTF';
+    font-size: 25px;
+    font-weight:300;
+    color: #696cff !important;
+}
+
+.total_lecture{
+    font-family: 'SLEIGothicTTF';
+    font-size: 18px;
+    text-align:center;
+}
