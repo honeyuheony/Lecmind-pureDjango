@@ -70,6 +70,7 @@
                         <span class="app-brand-text demo menu-text fw-bolder ms-2">Lecmind</span>
                     </a>
                 </div>
+                
                 <ul class="menu-inner py-1">
 
                     <!-- Dashboard -->
@@ -93,12 +94,15 @@
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">수강강의 목록</span>
                     </li>
+                    {% for sub in lecture_subject %}
                     <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                            <div data-i18n="Account Settings">객체지향개발론</div>
+                            <div data-i18n="Account Settings">{{sub.name}}</div> 
                         </a>
                     </li>
+                    {%endfor%}
+                </ul>
             </aside>
             <!-- / Menu -->
 
@@ -184,8 +188,9 @@
                                                     </div>
 
                                                     <div class="flex-grow-1">
-                                                        <span class="fw-semibold d-block">John Doe</span>
-                                                        <small class="text-muted">Admin</small>
+                                                        <span class="fw-semibold d-block">{{login_student.name}}</span>
+                                                        <small class="text-muted">{{login_student.id}}</small>
+                                                        <small class="text-muted">{{login_student.email}}</small>
                                                     </div>
                                                 </div>
                                             </div>

@@ -97,12 +97,15 @@
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">수강강의 목록</span>
                     </li>
+                    {% for sub in lecture_subject %}
                     <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                            <div data-i18n="Account Settings">객체지향개발론</div>
+                            <div data-i18n="Account Settings">{{sub.name}}</div> 
                         </a>
                     </li>
+                    {%endfor%}
+                </ul>
             </aside>
             <!-- / Menu -->
 
@@ -178,10 +181,9 @@
                                                     </div>
 
                                                     <div class="flex-grow-1">
-                                                        <span class="fw-semibold d-block">{{student.name}}</span>
-                                                        <small class="text-muted">{{student.id}}</small>
-                                                        <small class="text-muted">{{student.email}}</small>
-
+                                                        <span class="fw-semibold d-block">{{login_student.name}}</span>
+                                                        <small class="text-muted">{{login_student.id}}</small>
+                                                        <small class="text-muted">{{login_student.email}}</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -339,7 +341,7 @@
             console.log(lec)
             console.log(lec[0])
             console.log(lec[0].lecture_degree)
-            console.log(lec[1].lecture_time)
+            //console.log(Date(lec[1].lecture_time))
             console.log(lec[2].learning_time)
 
             
@@ -348,11 +350,32 @@
             let learnT = [];
             
             for(var i =0; i<lec.length; i+=3){
-                title.push(lec[i].lecture_degree);
-                lectT.push(lec[i+1].lecture_time);
-                learnT.push(lec[i+2].learning_time);
-            }
+                var lcT = lec[i+1].lecture_time.split(":");
+                var lnT = lec[i+2].learning_time.split(":");
+                var tmp1=0;
+                var tmp2=0;
+                if(lcT.length==3){
+                    tmp1 = Number(lcT[0]*60) + Number(lcT[1]) + Number(lcT[2]/100);
+                }else if(lcT.length==2){
+                    tmp1 = Number(lcT[0]) + Number((lcT[1]/100));
+                }else{
+                    tmp1 = Number(lct[0]/100);
+                }
 
+                if(lnT.length==3){
+                    tmp2 = Number(lnT[0]*60) + Number(lnT[1]) + Number(lnT[2]/100) ;
+                }else if(lnT.length==2){
+                    tmp2 = Number(lnT[0]) + Number(lnT[1]/100);
+                }else{
+                    tmp2 = Number(lnT[0]/100);
+                }
+
+               
+                title.push(lec[i].lecture_degree+'차시');
+                lectT.push(tmp1);
+                learnT.push(tmp2);
+            }
+    
             console.log(title);
             console.log(lectT);
             console.log(learnT);
@@ -427,6 +450,7 @@
             }
         });
 
+        //타임스탬프
         function makeSpot() {
             var spot_list = document.querySelector('.timeline');
             var spot = document.createElement("li");

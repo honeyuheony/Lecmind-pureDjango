@@ -23,6 +23,8 @@ def home(request):  #cur_lectureID
     lecture_info = Lecture.objects.all()
     context = {
         'lecture_info':lecture_info,
+        'lecture_subject':lecture_subject,
+        'login_student':login_student
         # 'all_lecture': all_lecture
         # 'current_lecture':current_lecture
     }
@@ -68,6 +70,8 @@ def detail(request,id):
     cl_subject = current_lecture.subject
     cl_student = cl_subject.student
     
+    lecture_subject = Subject.objects.filter(student=request.user)
+    
     all_lecture = Lecture.objects.filter(subject=cl_subject)
     print(all_lecture)
     
@@ -76,8 +80,8 @@ def detail(request,id):
     print(current_lecture.name)
     # user = Lecture.objects.get()
     lecture_info = Lecture.objects.all()
-    student = request.user
-    # print(student)
+    login_student = request.user
+    # print(login_student)
     # total_time = current_lecture.lecturetime
     # tt = total_time.split(':')
     # print(tt)
@@ -85,8 +89,9 @@ def detail(request,id):
     context = {
         'lecture_info':lecture_info,
         'current_lecture':current_lecture,
-        'student':student,
-        'all_lecture':all_lecture
+        'login_student':login_student,
+        'all_lecture':all_lecture,
+        'lecture_subject':lecture_subject
     }
     
     # print(current_lecture)
