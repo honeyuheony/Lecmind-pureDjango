@@ -70,7 +70,8 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = (
     'https://localhost:3000',
-    'chrome-extension://kacbbadcmnogihlgabdhemjbpocblfdn'
+    'chrome-extension://kacbbadcmnogihlgabdhemjbpocblfdn',
+    'https://www.youtube.com',
 )
 
 ROOT_URLCONF = 'patternProject.urls'
