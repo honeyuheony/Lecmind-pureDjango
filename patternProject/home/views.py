@@ -8,6 +8,7 @@ from .models import User
 from .forms import UserForm
 # Create your views here.
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
     # return HttpResponse("Hello, world. You're at the Home index.")
@@ -23,7 +24,7 @@ def signup(request):
         return redirect('signup')
     return render(request, 'signup.html', {'regi_form':user_form})
 
-
+@csrf_exempt
 def signin(request):
     # if str(request.user) != 'AnonymousUser':
     #     return redirect('home') # 일단 로그인 시 home으로 가도록 지정
@@ -34,6 +35,7 @@ def signin(request):
         user = authenticate(request, id=id, password=password)
         if user is not None:
             login(request, user)
+            request.session['id'] = id
             return redirect('home')
     return render(request, 'signin.html')
 

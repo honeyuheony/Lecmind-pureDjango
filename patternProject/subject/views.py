@@ -37,7 +37,7 @@ def learning(request):
         lec.save()
     return render(request, 'learning.html', {'lecture':lec})
 
-@login_required
+
 def learning_test(request, video_id = None):
     if request.method == "POST":
         sb, create = Subject.objects.update_or_create(
@@ -107,7 +107,6 @@ def videotest(request):
 
 # # 입력받은 강의정보로 lecture 필드 생성
 # # 입력받은 강의 url 통해 lecture 페이지 이동
-
 class LectureViewSet(ModelViewSet):
     queryset = Lecture.objects.all()
     serializer_class = LectureSerializer
@@ -133,6 +132,3 @@ class LectureViewSet(ModelViewSet):
 
 # 강의수강 시작 전 강의분류 선택
             
-
-
-    

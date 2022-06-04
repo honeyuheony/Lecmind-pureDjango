@@ -94,8 +94,7 @@ def print_face(facial_landmarks, _gray, _frame):
 
 
 
-""" Detect eye's gazing
-"""
+# Detect eye's gazing
 def get_gaze_ratio(eye_points, facial_landmarks, _gray, _frame):
     eye_region = np.array([(facial_landmarks.part(eye_points[0]).x, facial_landmarks.part(eye_points[0]).y),
                            (facial_landmarks.part(eye_points[1]).x, facial_landmarks.part(eye_points[1]).y),
@@ -140,8 +139,7 @@ def get_gaze_ratio(eye_points, facial_landmarks, _gray, _frame):
 
 
 
-""" Detect head's direction
-"""
+# Detect head's direction
 def get_head_angle_ratio(head_points, facial_landmarks, _frame):
     # 코의 가로선 표시
     nose_region1 = np.array([(facial_landmarks.part(head_points[0]).x, facial_landmarks.part(head_points[0]).y),
@@ -191,9 +189,7 @@ def get_head_angle_ratio(head_points, facial_landmarks, _frame):
 
 
 
-""" Compare faces
-"""
-
+# Compare faces
 def compare_faces(_frame, _num_faces, _temp_faces_for_compare):
     global path, is_face_compared
 
@@ -242,8 +238,7 @@ def compare_faces(_frame, _num_faces, _temp_faces_for_compare):
 
 
 
-""" Set criteria
-"""
+# Set criteria
 def set_criteria(_direction, _head_direction_sum, _criteria_finished, _direction_ratio, _eye_direction_sum):
 
     global criteria_frame_num, num_frames
