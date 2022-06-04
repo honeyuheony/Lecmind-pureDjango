@@ -6,6 +6,10 @@ from django.views import generic
 from .models import Subject, Lecture, Notes
 from home.models import User
 from .forms import *
+from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+from .serializers import SubjectSerializer, LectureSerializer, NotesSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .permissions import IsOwnerOrReadOnly
 
 # 학습 동영상 선택
 # 1. 과목방 생성 or 선택 ui를 통해 과목방 name post
@@ -104,15 +108,15 @@ def videotest(request):
 # # 입력받은 강의정보로 lecture 필드 생성
 # # 입력받은 강의 url 통해 lecture 페이지 이동
 
-# class LectureViewSet(ModelViewSet):
-#     queryset = Lecture.objects.all()
-#     serializer_class = LectureSerializer
-#     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
-#     # lectuer페이지 이동
-#     # def perform_create(self, serializer):
-#     #     sub_name = serializer.
-#     #     sub = Subject.objects.get(name="객체지향개발론")
-#     #     serializer.save(subject = sub)
+class LectureViewSet(ModelViewSet):
+    queryset = Lecture.objects.all()
+    serializer_class = LectureSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    # lectuer페이지 이동
+    # def perform_create(self, serializer):
+    #     sub_name = serializer.
+    #     sub = Subject.objects.get(name="객체지향개발론")
+    #     serializer.save(subject = sub)
 
 
 
