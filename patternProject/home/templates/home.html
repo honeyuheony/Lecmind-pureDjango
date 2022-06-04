@@ -63,38 +63,45 @@
             <!-- Menu -->
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo ">
-                    <a href="home.html" class="app-brand-link">
                         <span class="app-brand-logo demo">
                             <!-- 로고자리 -->
                         </span>
                         <span class="app-brand-text demo menu-text fw-bolder ms-2">Lecmind</span>
-                    </a>
                 </div>
                 
                 <ul class="menu-inner py-1">
 
                     <!-- Dashboard -->
                     <li class="menu-item active">
-                        <a href="home.html" class="menu-link">
+                        <a href={% url 'home' %} class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">Home</div>
                         </a>
                     </li>
 
                     <li class="menu-item active">
-                        <a href="login.html" class="menu-link">
-                            <!--로그아웃 | 로그인-->
+                        {% if login_student.is_authenticated %}
+                        <a href={% url 'signout' %} class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Analytics">Logout</div>
+                        </a>
+                        {% else %}
+                        <a href={% url 'signin' %} class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">Login</div>
-                            <!--로그아웃 | 로그인-->
                         </a>
+                        <a href={% url 'signup' %} class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Analytics">Signup</div>
+                        </a>
+                        {%endif%}
                     </li>
 
                     <!-- Layouts -->
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">수강강의 목록</span>
                     </li>
-                    {% for sub in lecture_subject %}
+                    {% for sub in all_subject %}
                     <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-dock-top"></i>
@@ -205,7 +212,7 @@
                             <!-- 분석차트 -->
                             <div class="col-md-5">
                                 <div class="card">
-                                    <h5 class="card-header m-0 me-2 pb-3">강의별 평균 수강시간</h5>
+                                    <h5 class="card-header m-0 me-2 pb-3">강의별 강의시간대비 평균 수강시간</h5>
                                     <!-- <p>실제강의시간 / 학습시간 비율의 평균값</p> -->
                                     <canvas id="myChartOne">
 
@@ -267,44 +274,90 @@
             let myChartOne = document.getElementById('myChartOne').getContext('2d');
             let myChartTwo = document.getElementById('myChartTwo').getContext('2d');
 
-            var lecture = [
-                {% for lecture in lecture_info %} {
-                    lecture_time : "{{lecture.lecture_time}}"
-                    // 변수명 : 탬플릿변수 이렇게 정의하면 갖다쓸수있아 문자열로 포장해서 써야겠다 저건
-                    
+            var lec = [
+                {% for lec in all_lectures %} {
+                    lecture_subject : "{{lec.subject}}",
+                    lecture_time : "{{lec.lecture_time}}",
+                    learning_time : "{{lec.learning_time}}"
                 },
                 {% endfor %}
             ]
-            console.log(lecture)
+            
+            // 강의별 평균 수강시간
+            function str2lct(lct){
+                console.log(lct)
+                console.log(lct[0])
+                console.log(lct[1])
 
-            /*var lec = [
-                {% for lec in all_lecture %} {
-                    lecture_degree : {{lec.degree}}
-                },
-                {% endfor %}
-            ]
-            console.log(lec)*/
+                let res=0;
+                if(lct.length==3){
+                    res = Number(lct[0]*60) + Number(lct[1]*60) + Number(lct[2]);
+                }else if(lct.length==2){
+                    res = Number(lct[0]*60) + Number((lct[1]));
+                }else{
+                    res = Number(lct[0]);
+                }
+                return res
+            }
+
+            function str2lnt(lnt){
+                let res=0;
+                if(lnt.length==3){
+                    res = Number(lnt[0]*60) + Number(lnt[1]*60) + Number(lnt[2]);
+                }else if(lnt.length==2){
+                    res = Number(lnt[0]*60) + Number((lnt[1]));
+                }else{
+                    res = Number(lnt[0]);
+                }
+                return res
+            }
+
+            
+            let subject = []
+            subject.push(lec[0].lecture_subject)
+            pre = 0
+            let t_lct=[0];
+            let t_lnt=[0];
+            for(let i=0; i<lec.length; i++){
+                if(subject[pre]==lec[i].lecture_subject){
+                    t_lct[pre]+= str2lct(lec[i].lecture_time.split(":"))
+                    t_lnt[pre]+= str2lnt(lec[i].learning_time.split(":"))
+                }else{
+                    subject.push(lec[i].lecture_subject)
+                    t_lct.push(str2lct(lec[i].lecture_time.split(":"))) 
+                    t_lnt.push(str2lnt(lec[i].learning_time.split(":")))
+                }
+            }
+
+            console.log(t_lct)
+
+            for(let i=0; i<subject.length; i++){
+                t_lct[i] = Math.round(t_lct[i]/60);
+                t_lnt[i] = Math.round(t_lnt[i]/60);
+            }
+            console.log(t_lct)
+
+            // 차트1
+            var cmpTimeChart = {
+                labels: subject,
+                datasets: [{
+                    label: '강의시간',
+                    data: t_lct,
+                    backgroundColor: [
+                        '#c3ea2a'
+                    ],
+                }, {
+                    label: '수강시간',
+                    data: t_lnt,
+                    backgroundColor: [
+                        '#ffd558'
+                    ],
+                }]
+            };
 
             let barChart = new Chart(myChartOne, {
                 type: 'bar',
-                data: {
-                    labels: ['객체지향개발론', '운영체제', '알고리즘 및 실습', '컴퓨터네트워크'],
-                    datasets: [{
-                        label: '강의별 평균 수강시간',
-                        data: [
-                            10,
-                            50,
-                            90,
-                            20
-                        ],
-                        backgroundColor: [
-                            '#FBF46D',
-                            '#B4FE98',
-                            '#77E4D4',
-                            '#998CEB'
-                        ]
-                    }]
-                },
+                data: cmpTimeChart,
                 options: {
                     responsive: false,
                 }

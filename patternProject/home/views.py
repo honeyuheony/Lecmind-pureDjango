@@ -1,4 +1,6 @@
-from re import sub
+from operator import le
+from re import A, sub
+from unittest import result
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -12,19 +14,32 @@ from .forms import UserForm
 from django.http import HttpResponse
 
 def home(request):  #cur_lectureID
-    # return HttpResponse("Hello, world. You're at the Home index.")
     login_student = request.user
-    learning_time = Lecture.objects.all()
     
-    lecture_subject = Subject.objects.filter(student=login_student)
-    # all_lecture = Lecture.objects.filter(subject__in=lecture_subject, student__in=login_student)
+    if str(login_student)=='AnonymousUser':
+        return redirect('signin')
     
-    # current_lecture = request.GET[id]
+    all_subject = Subject.objects.filter(student=login_student)
+    # lectures = Lecture.objects.filter(subject=tmp)
+    # tmp =all_subject.values_list('name')
+    # print(lectures)
+    # all_lecture = Lecture.objects.filter(subject = subject_lecture.name)
+    # all_lectures = Subject.prefetch_related('lecture_set')
+    
+    tmp = []
+    for lecture in all_subject:
+        tmp.append(Lecture.objects.filter(subject=lecture)) 
+    
+    all_lectures= tmp[0]
+    for lec in tmp:
+        all_lectures = all_lectures|lec
+    
     lecture_info = Lecture.objects.all()
     context = {
         'lecture_info':lecture_info,
-        'lecture_subject':lecture_subject,
-        'login_student':login_student
+        'all_subject':all_subject,
+        'login_student':login_student,
+        'all_lectures': all_lectures
         # 'all_lecture': all_lecture
         # 'current_lecture':current_lecture
     }
@@ -56,6 +71,9 @@ def signin(request):
             return redirect('home')
     return render(request, 'signin.html')
 
+def signout(request):
+    return render(request, 'signin.html')
+
 
 def subject(request):
     lecture_info = Lecture.objects.all()
@@ -68,16 +86,11 @@ def subject(request):
 def detail(request,id):
     current_lecture = Lecture.objects.get(video_id=id)
     cl_subject = current_lecture.subject
-    cl_student = cl_subject.student
     
     lecture_subject = Subject.objects.filter(student=request.user)
     
     all_lecture = Lecture.objects.filter(subject=cl_subject)
-    print(all_lecture)
-    
-    print(cl_student)
-    print(cl_subject)
-    print(current_lecture.name)
+   
     # user = Lecture.objects.get()
     lecture_info = Lecture.objects.all()
     login_student = request.user
