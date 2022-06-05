@@ -4,7 +4,7 @@ import json
 import urllib3
 from typing import Dict
 from json import loads
-from .models import Semester, Course
+from .models import Analysis, Interaction
 import cv2
 import numpy as np
 import dlib
@@ -154,12 +154,12 @@ def set_concentrate(img):
         key = cv2.waitKey(1)
         cv2.destroyAllWindows()
 
-    # ESC 입력시 프로그램 종료
-    if key == 27:
-        break
+    # # ESC 입력시 프로그램 종료
+    # if key == 27:
+    #     break
 
-    cap.release()
-    cv2.destroyAllWindows()
+    # cap.release()
+    # cv2.destroyAllWindows()
 
 
 # get midpoint
