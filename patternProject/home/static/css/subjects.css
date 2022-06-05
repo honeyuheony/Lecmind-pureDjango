@@ -1,0 +1,23 @@
+.subjectTitle{
+    padding: 10px 10px;
+    background-color: #f4f5fe;
+}
+.subjectTitle p{
+    text-align: center;
+}
+
+.bigTitle{
+    padding: 10px 10px;
+    font-size: xx-large;
+    text-align: center;
+}
+
+.lec_card{
+    padding: 10px 10px;
+    text-align: center;
+}
+
+#lec_Title{
+    font-size: initial;
+    color: #696cff !important;
+}

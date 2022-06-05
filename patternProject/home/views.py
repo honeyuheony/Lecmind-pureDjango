@@ -1,5 +1,6 @@
 from operator import le
 from re import A, sub
+from unicodedata import name
 from unittest import result
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
@@ -75,11 +76,20 @@ def signout(request):
     return render(request, 'signin.html')
 
 
-def subject(request):
+def subject(request, sub):
+    login_student = request.user
+    all_subject = Subject.objects.filter(student=login_student)
+    current_subject = Subject.objects.get(name=sub)
+    all_lecture = Lecture.objects.filter(subject=current_subject).order_by('degree')
+    
+    
     lecture_info = Lecture.objects.all()
     
     context = {
-        'lecture_info':lecture_info,
+        'login_student':login_student,
+        'all_subject':all_subject,
+        'all_lecture':all_lecture,
+        'current_subject':current_subject
     }
     return render(request, 'subjects.html', context)
 

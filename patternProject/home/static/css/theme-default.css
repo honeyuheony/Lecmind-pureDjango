@@ -1115,7 +1115,7 @@ html:not(.layout-menu-collapsed) .bg-menu-theme .menu-inner .menu-item .menu-lin
 } */
 
 canvas {
-    display: inline;
+    display: inline-block;
 }
 
 body{

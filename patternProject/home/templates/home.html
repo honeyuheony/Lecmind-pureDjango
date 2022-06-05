@@ -214,16 +214,21 @@
                                 <div class="card">
                                     <h5 class="card-header m-0 me-2 pb-3">강의별 강의시간대비 평균 수강시간</h5>
                                     <!-- <p>실제강의시간 / 학습시간 비율의 평균값</p> -->
-                                    <canvas id="myChartOne">
-
-                                    </canvas>
+                                    
+                                        <canvas id="myChartOne" style="position: relative; height:25vh; width:auto;">
+                                        </canvas>
+                                    
+                                    
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="card">
                                     <h5 class="card-header">강의별 복습추천구간 비율</h5>
-                                    <canvas id="myChartTwo">
-                                    </canvas>
+                                    
+                                        <canvas id="myChartTwo" style="position: relative"; height:40vh; width:40vw;>
+                                        </canvas>
+                                
+                                    
                                 </div>
                             </div>
 
@@ -360,6 +365,16 @@
                 data: cmpTimeChart,
                 options: {
                     responsive: false,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            left: 20,
+                            right: 20,
+                            top: 20,
+                            bottom: 20
+                        }
+                    },
+                    
                 }
             });
 
@@ -385,6 +400,16 @@
                 },
                 options: {
                     responsive: false,
+                    layout: {
+                        padding: {
+                            left: 50,
+                            right: 50,
+                            bottom: 20
+                        }
+                    },
+                    labels: {
+                        align: 'left'
+                    }
                 }
             });
         </script>
