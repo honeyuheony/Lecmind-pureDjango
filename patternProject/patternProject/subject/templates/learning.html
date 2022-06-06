@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <div className="container">
+        <div className="Video">
+            <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+            <div id="player"></div>
+            <div class="video_setting">
+                <span>구간 이동 간격</span>
+                <select class="set_interval_box" onchange="set_interval()">
+                    <option value=5>5s</option>
+                    <option value=10>10s</option>
+                    <option value=15>15s</option>
+                    <option value=30>30s</option>
+                </select>
+                <span>재생 속도</span>
+                <select class="set_speed_box" onchange="setPlaybackRate()">
+                    <option value="0.5">0.5x</option>
+                    <option value="0.75">0.75x</option>
+                    <option value="1">1x</option>
+                    <option value="1.25">1.25x</option>
+                    <option value="1.5">1.5x</option>
+                    <option value="1.75">1.75x</option>
+                    <option value="2">2x</option>
+                </select>
+                <button id='rewind'>뒤로가기</button>
+                <button id="play">재생</button>
+                <button id="fast_forward">앞으로가기</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <form>
+            <div class="title">
+                <textarea class="title_input" id="title_input" rows="1" maxlength="50" minlength="3"
+                    placeholder="제목을 입력하세요."></textarea>
+            </div>
+            <div class="content">
+                <textarea class="content_input" id="content_input" rows="19" maxlength="1000" minlength="10"
+                    placeholder="작성할 내용을 입력하세요.">{{lecture.name}}</textarea>
+            </div>
+            <div class="mycam">
+                <img src="{% url 'detectme' %}" style="width: 200px;" />
+            </div>
+            <!-- {/* <span class="textarea_count">0/1000 (최대 1000자)</span> */} -->
+        </form>
+    </div>
+    <script>
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '360',
+                width: '640',
+                videoId: '{{lecture.video_id}}',
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                },
+                playerVals: { 'origin': 'http://127.0.0.1:8000' }
+            });
+        }
+
+        // 비디오 로딩완료시 동작
+        // 1. 동영상 총 시간 구하기
+        // 2. 동영상 누적 재생시간 초기화
+        // 3. 동영상 현재 구간 초기화
+
+        function getVideoTime() {
+            var totaltime = player.getDuration()
+            return totaltime
+        }
+        var init = false
+        var total_time = 0
+        var current_time = 0
+        var run_time = 0
+        var start = new Date()
+        var end = new Date()
+        var interval = 5
+        function onPlayerReady(event) {
+            // total_time 서버로 보내기
+            event.target.playVideo();
+            total_time = getVideoTime()
+        }
+
+        // 비디오 상태 변경시 동작
+        // state = 1 : 재생, 2 : 일시중지, 3 : 버퍼링, 0 : 종료
+        // js 시간함수 사용해서 재생, 일시중지, 종료 함수 정의하기
+        var done = false;
+        var temp_time = 0
+        function onPlayerStateChange(event) {
+            end = new Date()
+            temp_time = (end - start) / 1000
+            if (event.data == YT.PlayerState.PLAYING && !done) {
+                if (init == false) {
+                    init = true
+                }
+                else {
+                    run_time += temp_time
+                }
+                // 이벤트 전송
+            }
+            if (event.data == YT.PlayerState.PAUSED && !done) {
+                run_time += temp_time
+                current_time += temp_time
+                // 이벤트 전송
+            }
+            if (event.data == YT.PlayerState.ENDED && !done) {
+                run_time += temp_time
+                current_time += temp_time
+                // 학습 종료, runtime 등 전송
+            }
+            start = new Date()
+        }
+        // 재생 or 정지
+        function play() {
+            end = new Date()
+            temp_time = (end - start) / 1000
+            if (player.getPlayerState() == 2) {
+                run_time += temp_time
+            }
+            else {
+                run_time += temp_time
+                current_time += temp_time
+            }
+            start = new Date()
+            if (player.getPlayerState() == 1) {
+                // 이벤트 전송
+                $.ajax({
+                    url: '/analysis/lecture_event',
+                    type: 'POST',
+                    data: {
+                        'lecture': "{{lecture}}",
+                        'interaction_type': 'pause',
+                        'interaction_time_real': run_time,
+                        'interaction_time_lecture': current_time
+                    },
+                    datatype: 'json',
+                })
+                player.pauseVideo();
+            }
+            if (player.getPlayerState() == 2) {
+                player.playVideo();
+                // 이벤트 전송
+                $.ajax({
+                    url: '/analysis/lecture_event',
+                    type: 'POST',
+                    data: {
+                        'lecture': "{{lecture}}",
+                        'interaction_type': 'redo',
+                        'interaction_time_real': run_time,
+                        'interaction_time_lecture': current_time
+                    },
+                    datatype: 'json',
+                })
+            }
+            if (player.getPlayerState() == -1) {
+                player.playVideo();
+            }
+        }
+        document.getElementById("play").addEventListener('click', play);
+        // 앞으로가기
+        function fast_forward() {
+            end = new Date()
+            temp_time = (end - start) / 1000
+            if (player.getPlayerState() == 2) {
+                run_time += temp_time
+            }
+            else {
+                run_time += temp_time
+                current_time += temp_time
+            }
+            start = new Date()
+            player.seekTo(parseInt(current_time) + interval)
+            current_time += interval
+            // 이벤트 전송
+            $.ajax({
+                url: '/analysis/lecture_event',
+                type: 'POST',
+                data: {
+                    'lecture': "{{lecture}}",
+                    'interaction_type': 'fast_forward',
+                    'interaction_time_real': run_time,
+                    'interaction_time_lecture': current_time
+                },
+                datatype: 'json',
+            })
+        }
+        document.getElementById("fast_forward").addEventListener('click', fast_forward);
+        // 뒤로가기
+        function rewind() {
+            end = new Date()
+            temp_time = (end - start) / 1000
+            if (player.getPlayerState() == 2) {
+                run_time += temp_time
+            }
+            else {
+                run_time += temp_time
+                current_time += temp_time
+            }
+            start = new Date()
+            player.seekTo(parseInt(current_time) - interval)
+            current_time -= interval
+            // 이벤트 전송
+            $.ajax({
+                url: '/analysis/lecture_event',
+                type: 'POST',
+                data: {
+                    'lecture': "{{lecture}}",
+                    'interaction_type': 'rewind',
+                    'interaction_time_real': run_time,
+                    'interaction_time_lecture': current_time
+                },
+                datatype: 'json',
+            })
+        }
+        document.getElementById("rewind").addEventListener('click', rewind);
+        // 앞으로가기 & 뒤로가기 시간 설정
+        function set_interval() {
+            var box = document.querySelector(".set_interval_box")
+            interval = parseInt(box.options[box.selectedIndex].value)
+        }
+        // 재생속도 설정
+        function setPlaybackRate() {
+            var box = document.querySelector(".set_speed_box")
+            player.setPlaybackRate(parseFloat(box.options[box.selectedIndex].value))
+        }
+    </script>
+</body>
+
+</html>
