@@ -24,6 +24,7 @@ def learning(request):
         sb.save()
         # lecture 생성, 이미 있으면 기존 학습 데이터 불러오기
         lec, create = Lecture.objects.update_or_create(
+            student = request.user,
             subject = sb,
             video_id = request.POST.get('url').split('=')[1]
         )

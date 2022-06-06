@@ -11,7 +11,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
-    # return HttpResponse("Hello, world. You're at the Home index.")
+    if str(request.user) == 'AnonymousUser':
+        return redirect('signin') # 일단 로그인 시 home으로 가도록 지정
     return render(request, 'home.html')
 
 def signup(request):
@@ -26,8 +27,8 @@ def signup(request):
 
 @csrf_exempt
 def signin(request):
-    # if str(request.user) != 'AnonymousUser':
-    #     return redirect('home') # 일단 로그인 시 home으로 가도록 지정
+    if str(request.user) != 'AnonymousUser':
+        return redirect('home') # 일단 로그인 시 home으로 가도록 지정
     
     if request.method == "POST":
         id = request.POST.get('id','')
@@ -35,7 +36,7 @@ def signin(request):
         user = authenticate(request, id=id, password=password)
         if user is not None:
             login(request, user)
-            request.session['id'] = id
+            request.session['userid'] = user.id
             return redirect('home')
     return render(request, 'signin.html')
 

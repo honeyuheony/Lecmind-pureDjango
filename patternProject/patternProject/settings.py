@@ -48,12 +48,12 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     'rest_framework_jwt.blacklist',
 
-     #allauth
+    # allauth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
 
-    #provider 구글 페이스북 카톡 깃허브 등 소셜로그인 제공업체
+    # provider 구글 페이스북 카톡 깃허브 등 소셜로그인 제공업체
     'allauth.socialaccount.providers.google',
 ]
 
@@ -68,13 +68,15 @@ MIDDLEWARE = [
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CSRF_TRUSTED_ORIGINS = ['chrome-extension://kacbbadcmnogihlgabdhemjbpocblfdn']
+CSRF_TRUSTED_ORIGINS = ['chrome-extension://*']
 
-CORS_ORIGIN_WHITELIST = (
-    'https://localhost:3000',
-    'chrome-extension://kacbbadcmnogihlgabdhemjbpocblfdn',
-    'https://www.youtube.com',
-)
+# CORS_ORIGIN_WHITELIST = (
+#     'https://localhost:3000',
+#     # 'chrome-extension://',
+#     '*',
+#     'https://www.youtube.com',
+# )
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'patternProject.urls'
 
@@ -159,7 +161,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -179,9 +180,9 @@ REST_FRAMEWORK = {
 }
 
 AUTHENTICATION_BACKENDS = (
-    #Needed to login by username in Django admin, regardless of 'allauth'
+    # Needed to login by username in Django admin, regardless of 'allauth'
     'django.contrib.auth.backends.ModelBackend',
-    
+
     # 'allauth' specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 )
@@ -201,3 +202,10 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+# celery
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
