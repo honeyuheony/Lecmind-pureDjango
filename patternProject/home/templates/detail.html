@@ -333,58 +333,42 @@
         // var ctx = timelines.getContext('2d');
 
         var lec = [
-                {% for lec in all_lecture %} {
-                    lecture_degree : {{lec.degree}}
-                },{
-                    lecture_time : "{{lec.lecture_time}}"
-                },{
-                    learning_time : "{{lec.learning_time}}"
+                {% for lec in lectureOFsubject %} {
+                    subject : "{{lec.subject}}",
+                    lecture_degree: {{lec.degree}},
+                    lec_name: "{{lec.name}}",
+                    lecture_time : "{{lec.lecture_time}}",
+                    learning_time : "{{lec.learning_time}}",
                 },
                 {% endfor %}
             ]
-            console.log(lec)
-            console.log(lec[0])
-            console.log(lec[0].lecture_degree)
-            //console.log(Date(lec[1].lecture_time))
-            console.log(lec[2].learning_time)
-
             
-            let title = [];
-            let lectT = [];
-            let learnT = [];
-            
-            for(var i =0; i<lec.length; i+=3){
-                var lcT = lec[i+1].lecture_time.split(":");
-                var lnT = lec[i+2].learning_time.split(":");
-                var tmp1=0;
-                var tmp2=0;
-                if(lcT.length==3){
-                    tmp1 = Number(lcT[0]*60) + Number(lcT[1]) + Number(lcT[2]/100);
-                }else if(lcT.length==2){
-                    tmp1 = Number(lcT[0]) + Number((lcT[1]/100));
-                }else{
-                    tmp1 = Number(lct[0]/100);
-                }
-
-                if(lnT.length==3){
-                    tmp2 = Number(lnT[0]*60) + Number(lnT[1]) + Number(lnT[2]/100) ;
-                }else if(lnT.length==2){
-                    tmp2 = Number(lnT[0]) + Number(lnT[1]/100);
-                }else{
-                    tmp2 = Number(lnT[0]/100);
-                }
-
-               
-                title.push(lec[i].lecture_degree+'차시');
-                lectT.push(tmp1);
-                learnT.push(tmp2);
+        
+        function str2time(str){
+            let res=0;
+            if(str.length==3){
+                res = Number(str[0]*60) + Number(str[1]*60) + Number(str[2]);
+            }else if(str.length==2){
+                res = Number(str[0]*60) + Number((str[1]));
+            }else{
+                res = Number(str[0]);
             }
+            console.log(res)
+            return res
+        }
+
+            
+        let title = [];
+        let lectT = [];
+        let learnT = [];
+        for(let i=0; i<lec.length; i++){
+            title.push(lec[i].lecture_degree+'차시');
+            lectT[i] = Math.round(str2time(lec[i].lecture_time.split(":")));
+            learnT[i] = Math.round(str2time(lec[i].learning_time.split(":")));
+        }
+            
+         
     
-            console.log(title);
-            console.log(lectT);
-            console.log(learnT);
-
-
         let barChart = new Chart(chartOne, {
             type: 'line',
             data: {

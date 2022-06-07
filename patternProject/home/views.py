@@ -129,8 +129,10 @@ def detail(request,id):
     
     # lecture_subject = Subject.objects.filter(student=request.user)
     
-    all_lecture = Lecture.objects.filter(subject=current_subject)
+    lectureOFsubject = Lecture.objects.filter(subject=current_subject)
     all_lectures= Lecture.objects.filter(student=login_student)
+    
+    print(lectureOFsubject)
     
     all_subject = set()
     for l in all_lectures:
@@ -148,9 +150,10 @@ def detail(request,id):
         'lecture_info':lecture_info,
         'current_lecture':current_lecture,
         'login_student':login_student,
-        'all_lecture':all_lecture,
+        'all_lectures':all_lectures,
         'current_subject':current_subject,
-        'all_subject':all_subject
+        'all_subject':all_subject,
+        'lectureOFsubject':lectureOFsubject
     }
     
     # print(current_lecture)

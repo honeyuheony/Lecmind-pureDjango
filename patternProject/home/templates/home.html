@@ -210,7 +210,7 @@
 
 
                             <!-- 분석차트 -->
-                            <div class="col-md-5">
+                            <div class="col-md-8">
                                 <div class="card">
                                     <h5 class="card-header m-0 me-2 pb-3">강의별 강의시간대비 평균 수강시간</h5>
                                     <!-- <p>실제강의시간 / 학습시간 비율의 평균값</p> -->
@@ -218,19 +218,9 @@
                                         <canvas id="myChartOne" style="position: relative; height:25vh; width:auto;">
                                         </canvas>
                                     
-                                    
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <h5 class="card-header">강의별 복습추천구간 비율</h5>
-                                    
-                                        <canvas id="myChartTwo" style="position: relative"; height:40vh; width:40vw;>
-                                        </canvas>
-                                
-                                    
-                                </div>
-                            </div>
+                            
 
 
 
@@ -277,60 +267,56 @@
         <!-- <script src="../static/js/home.js" type="text/javascript"></script> -->
         <script>
             let myChartOne = document.getElementById('myChartOne').getContext('2d');
-            let myChartTwo = document.getElementById('myChartTwo').getContext('2d');
+            
 
             var lec = [
                 {% for lec in all_lectures %} {
-                    lecture_subject : "{{lec.subject}}",
+                    subject : "{{lec.subject}}",
+                    lec_name: "{{lec.name}}",
                     lecture_time : "{{lec.lecture_time}}",
-                    learning_time : "{{lec.learning_time}}"
+                    learning_time : "{{lec.learning_time}}",
                 },
                 {% endfor %}
             ]
+
+            
+
+            console.log('hi');
+            console.log(lec)
+
+            // 강의목록
+            
+
             
             // 강의별 평균 수강시간
-            function str2lct(lct){
-                console.log(lct)
-                console.log(lct[0])
-                console.log(lct[1])
-
+            function str2time(str){
                 let res=0;
-                if(lct.length==3){
-                    res = Number(lct[0]*60) + Number(lct[1]*60) + Number(lct[2]);
-                }else if(lct.length==2){
-                    res = Number(lct[0]*60) + Number((lct[1]));
+                if(str.length==3){
+                    res = Number(str[0]*60) + Number(str[1]*60) + Number(str[2]);
+                }else if(str.length==2){
+                    res = Number(str[0]*60) + Number((str[1]));
                 }else{
-                    res = Number(lct[0]);
+                    res = Number(str[0]);
                 }
                 return res
             }
 
-            function str2lnt(lnt){
-                let res=0;
-                if(lnt.length==3){
-                    res = Number(lnt[0]*60) + Number(lnt[1]*60) + Number(lnt[2]);
-                }else if(lnt.length==2){
-                    res = Number(lnt[0]*60) + Number((lnt[1]));
-                }else{
-                    res = Number(lnt[0]);
-                }
-                return res
-            }
 
             
             let subject = []
-            subject.push(lec[0].lecture_subject)
+            subject.push(lec[0].subject)
             pre = 0
             let t_lct=[0];
             let t_lnt=[0];
             for(let i=0; i<lec.length; i++){
-                if(subject[pre]==lec[i].lecture_subject){
-                    t_lct[pre]+= str2lct(lec[i].lecture_time.split(":"))
-                    t_lnt[pre]+= str2lnt(lec[i].learning_time.split(":"))
+                if(subject[pre]==lec[i].subject){
+                    t_lct[pre]+= str2time(lec[i].lecture_time.split(":"))
+                    t_lnt[pre]+= str2time(lec[i].learning_time.split(":"))
                 }else{
-                    subject.push(lec[i].lecture_subject)
-                    t_lct.push(str2lct(lec[i].lecture_time.split(":"))) 
-                    t_lnt.push(str2lnt(lec[i].learning_time.split(":")))
+                    subject.push(lec[i].subject)
+                    t_lct.push(str2time(lec[i].lecture_time.split(":"))) 
+                    t_lnt.push(str2time(lec[i].learning_time.split(":")))
+                    pre++;
                 }
             }
 
@@ -378,40 +364,7 @@
                 }
             });
 
-            let barChartTwo = new Chart(myChartTwo, {
-                type: 'doughnut',
-                data: {
-                    labels: ['객체지향개발론', '운영체제', '알고리즘 및 실습', '컴퓨터네트워크'],
-                    datasets: [{
-                        label: '강의별 복습추천구간 비율',
-                        data: [
-                            20,
-                            10,
-                            60,
-                            35
-                        ],
-                        backgroundColor: [
-                            '#FBF46D',
-                            '#B4FE98',
-                            '#77E4D4',
-                            '#998CEB'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: false,
-                    layout: {
-                        padding: {
-                            left: 50,
-                            right: 50,
-                            bottom: 20
-                        }
-                    },
-                    labels: {
-                        align: 'left'
-                    }
-                }
-            });
+            
         </script>
 
         <!-- Place this tag in your head or just before your close body tag. -->
