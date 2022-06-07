@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from django.views import generic
 from .models import Subject, Lecture, Notes
 from home.models import User
@@ -14,7 +15,8 @@ from .permissions import IsOwnerOrReadOnly
 # 학습 동영상 선택
 # 1. 과목방 생성 or 선택 ui를 통해 과목방 name post
 # 2. 강의 url post
-@login_required
+
+@csrf_exempt
 def learning(request):
     if request.method == "POST":
         sb, create = Subject.objects.update_or_create(
@@ -24,6 +26,7 @@ def learning(request):
         sb.save()
         # lecture 생성, 이미 있으면 기존 학습 데이터 불러오기
         lec, create = Lecture.objects.update_or_create(
+            student = request.user,
             subject = sb,
             video_id = request.POST.get('url').split('=')[1]
         )
