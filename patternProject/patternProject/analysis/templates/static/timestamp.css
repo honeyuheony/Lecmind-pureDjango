@@ -1,0 +1,15 @@
+.timestamp_title {
+    position: relative;
+
+    font-family: 'Work Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 56px;
+    
+    /* identical to box height */
+
+    letter-spacing: -0.02em;
+
+    color: #EF87B2;
+}

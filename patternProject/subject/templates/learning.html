@@ -7,55 +7,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>Document</title>
+    <link rel="stylesheet" href="../static/css/learningpage.css" />
 </head>
 
 <body>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <div className="container">
-        <div className="Video">
+    <div class="container">
+        <div class="Video">
             <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+            <div class="iframe_player">
+                <div class="iframe_wrap">
             <div id="player"></div>
-            <div class="video_setting">
-                <span>구간 이동 간격</span>
-                <select class="set_interval_box" onchange="set_interval()">
-                    <option value=5>5s</option>
-                    <option value=10>10s</option>
-                    <option value=15>15s</option>
-                    <option value=30>30s</option>
-                </select>
-                <span>재생 속도</span>
-                <select class="set_speed_box" onchange="setPlaybackRate()">
-                    <option value="0.5">0.5x</option>
-                    <option value="0.75">0.75x</option>
-                    <option value="1">1x</option>
-                    <option value="1.25">1.25x</option>
-                    <option value="1.5">1.5x</option>
-                    <option value="1.75">1.75x</option>
-                    <option value="2">2x</option>
-                </select>
-                <button id='rewind'>뒤로가기</button>
-                <button id="play">재생</button>
-                <button id="fast_forward">앞으로가기</button>
+            </div>
+            </div>
+
+            <div class="video_operation">
+                <a href="javascript:doDisplay();" class="setting_nav">>>Video Setting</a>
+                <div class="video_setting" style="display: none;">
+                    <span>구간 이동 간격</span>
+                    <select class="set_interval_box" onchange="set_interval()">
+                        <option value=5>5s</option>
+                        <option value=10>10s</option>
+                        <option value=15>15s</option>
+                        <option value=30>30s</option>
+                    </select>
+                    <span>재생 속도</span>
+                    <select class="set_speed_box" onchange="setPlaybackRate()">
+                        <option value="0.5">0.5x</option>
+                        <option value="0.75">0.75x</option>
+                        <option value="1">1x</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="1.75">1.75x</option>
+                        <option value="2">2x</option>
+                    </select>
+                </div>
+                <div class="btn_group">
+                    <button id='rewind'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+        </svg></button>
+                    <button id="play"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+          <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+        </svg></button>
+                    <button id="fast_forward"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+        </svg></button>
+                  </div>    
             </div>
         </div>
-    </div>
-    <div class="container">
+
         <form>
-            <div class="title">
-                <textarea class="title_input" id="title_input" rows="1" maxlength="50" minlength="3"
-                    placeholder="제목을 입력하세요."></textarea>
+            <div class="Memo">
+            <div class="select_nav">
+                <div class="folder_nav" tabindex="1">
+                    <input class="select_folder" name="folder" type="radio" id="default" checked>
+                    <label for="default" class="folder_option">폴더 미지정</label>
+                    <input class="select_folder" name="folder" type="radio" id="opt1">
+                    <label for="opt1" class="folder_option">1</label>
+                    <input class="select_folder" name="folder" type="radio" id="opt2">
+                    <label for="opt2" class="folder_option">2</label>
+                    <input class="select_folder" name="folder" type="radio" id="opt3">
+                    <label for="opt3" class="folder_option">3</label>
+                    <input class="select_folder" name="folder" type="radio" id="opt4">
+                    <label for="opt4" class="folder_option">4</label>
+                </div>
+                <div class="memo_nav">
+                <button class="mymemo_storage">내 문서함</button>
+                <button class="memo_save" type="submit">저장하기</button>
+                </div>
             </div>
-            <div class="content">
-                <textarea class="content_input" id="content_input" rows="19" maxlength="1000" minlength="10"
-                    placeholder="작성할 내용을 입력하세요.">{{lecture.name}}</textarea>
-            </div>
-            <div class="mycam">
-                <img src="{% url 'detectme' %}" style="width: 200px;" />
+            <div class="writing">
+                <div class="title">
+                    <textarea class="title_input" id="title_input" rows="1" maxlength="50"
+                        placeholder="제목을 입력하세요." autofocus data-autosave-url="https://localhost:8080/autosave"></textarea>
+                </div>
+                <div class="content">
+                    <textarea class="content_input" id="content_input" rows="15" maxlength="1000"
+                        placeholder="작성할 내용을 입력하세요." data-autosave-url="https://localhost:8080/autosave"></textarea>
+                </div>
+                </div>
+                <div class="mycam">
+                    <img src="{% url 'detectme' %}" style="width: 200px;" />
+                </div>
             </div>
             <!-- {/* <span class="textarea_count">0/1000 (최대 1000자)</span> */} -->
         </form>
     </div>
+    <script src="../static/js/learning.js"></script>
     <script>
+        //video setting display
+        var VSet_display = true;
+        function doDisplay(){
+            var con = document.querySelector('.video_setting');
+            if(con.style.display=='none'){
+                con.style.display = 'block';
+            }
+            else{
+                con.style.display = 'none';
+            }
+        }
         // 2. This code loads the IFrame Player API code asynchronously.
         var tag = document.createElement('script');
 

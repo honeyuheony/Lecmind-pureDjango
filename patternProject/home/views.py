@@ -9,6 +9,11 @@ from .forms import UserForm
 # Create your views here.
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework_jwt.settings import api_settings
+
+jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
 
 def home(request):
     if str(request.user) == 'AnonymousUser':
@@ -35,9 +40,13 @@ def signin(request):
         password = request.POST.get('password','')
         user = authenticate(request, id=id, password=password)
         if user is not None:
+            response = redirect('home')
             login(request, user)
-            request.session['userid'] = user.id
-            return redirect('home')
+            payload = jwt_payload_handler(user)
+            token = jwt_encode_handler(payload)
+            response.set_cookie(key = 'Authorization', value = f'{token}')
+            request.session['id'] = id
+            return response
     return render(request, 'signin.html')
 
 
@@ -51,6 +60,7 @@ def detail(request):
 @login_required
 def signout(request):
     logout(request)
+    request.COOKIES.Authorization = ''
     return redirect('signin')
 
 # 수강과목 리스트
