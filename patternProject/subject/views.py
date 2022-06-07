@@ -4,11 +4,11 @@ from django.contrib.auth import authenticate, login
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views import generic
-from .models import Subject, Lecture, Notes
+from .models import Lecture, Notes
 from home.models import User
 from .forms import *
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
-from .serializers import SubjectSerializer, LectureSerializer, NotesSerializer
+from .serializers import LectureSerializer, NotesSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsOwnerOrReadOnly
 
@@ -19,21 +19,11 @@ from .permissions import IsOwnerOrReadOnly
 @csrf_exempt
 def learning(request):
     if request.method == "POST":
-        sb, create = Subject.objects.update_or_create(
-            student = request.user,
-            name = request.POST.get('subject_name')
-        )
-        sb.save()
         # lecture 생성, 이미 있으면 기존 학습 데이터 불러오기
         lec, create = Lecture.objects.update_or_create(
             student = request.user,
-            subject = sb,
             video_id = request.POST.get('url').split('=')[1]
         )
-        if lec.degree == None:
-            lec.degree = Lecture.objects.filter(subject = sb).count() + 1
-        if lec.name == None:
-            lec.name = str(sb.name) + '_' + str(lec.degree)
         if lec.lecture_time == None:
             lec.lecture_time = request.POST.get('video_length')
         lec.state = 'ongoing'
@@ -43,21 +33,11 @@ def learning(request):
 
 def learning_test(request, video_id = None):
     if request.method == "POST":
-        sb, create = Subject.objects.update_or_create(
-            student = request.user.id,
-            name = request.POST.get('name')
-        )
-        sb.save()
         # lecture 생성, 이미 있으면 기존 학습 데이터 불러오기
         lec, create = Lecture.objects.update_or_create(
             student = request.user.id,
-            subject = sb,
             url = request.Post.get('video_id')
         )
-        if lec.degree == None:
-            lec.degree = Lecture.objects.count(subject = sb) + 1
-        if lec.name == None:
-            lec.name = str(sb.name) + '_' + str(lec.degree)
         if lec.lecture_time == None:
             lec.lecture_time = request.Post.get('video_length')
         lec.state = 'ongoing'

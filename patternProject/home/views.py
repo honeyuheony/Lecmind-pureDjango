@@ -1,3 +1,4 @@
+import datetime
 from operator import le
 from re import A, sub
 from unicodedata import name
@@ -8,7 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 # from patternProject.subject.views import learning
 
-from subject.models import Lecture, Subject
+from subject.models import Lecture
 from .models import User
 from .forms import UserForm
 # Create your views here.
@@ -18,7 +19,7 @@ from rest_framework_jwt.settings import api_settings
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-
+api_settings.JWT_EXPRIATION_DELTA = datetime.timedelta(days=7)
 
 def home(request):  #cur_lectureID
     login_student = request.user
@@ -26,21 +27,18 @@ def home(request):  #cur_lectureID
     if str(login_student)=='AnonymousUser':
         return redirect('signin')
     
-    all_subject = Subject.objects.filter(student=login_student)
+
     # lectures = Lecture.objects.filter(subject=tmp)
     # tmp =all_subject.values_list('name')
     # print(lectures)
     # all_lecture = Lecture.objects.filter(subject = subject_lecture.name)
     # all_lectures = Subject.prefetch_related('lecture_set')
     
-    tmp = []
-    for lecture in all_subject:
-        tmp.append(Lecture.objects.filter(subject=lecture)) 
-    
-    all_lectures= tmp[0]
-    for lec in tmp:
-        all_lectures = all_lectures|lec
-    
+    all_lectures= Lecture.objects.filter(student=login_student)
+    all_subject = []
+    for l in all_lectures:
+        all_subject.append(l.student)
+    all_subject = set(all_subject)
     lecture_info = Lecture.objects.all()
     context = {
         'lecture_info':lecture_info,
