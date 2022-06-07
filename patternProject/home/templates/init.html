@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+</script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+<link rel="" <!DOCTYPE html>
+
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
+
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
+
+=========================================================
+ -->
+<!-- beautify ignore:start -->
+<html lang="en" class="light-style layout-menu-fixed " dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <title>Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    
+    <meta name="description" content="Most Powerful &amp; Comprehensive Bootstrap 5 HTML Admin Dashboard Template built for developers!" />
+    <meta name="keywords" content="dashboard, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5">
+    <!-- Canonical SEO -->
+    <link rel="canonical" href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/">
+    
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{% static 'css/core.css' %}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{% static 'css/theme-default.css' %}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{% static 'css/demo.css' %}" />
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+
+    <!-- chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js" integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <!-- Custom notification for demo -->
+    <!-- beautify ignore:end -->
+
+</head>
+
+<body></body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar  ">
+        <div class="layout-container">
+            <!-- Menu -->
+            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+                <div class="app-brand demo ">
+                        <span class="app-brand-logo demo">
+                            <!-- 로고자리 -->
+                        </span>
+                        <span class="app-brand-text demo menu-text fw-bolder ms-2">Lecmind</span>
+                </div>
+                
+                <ul class="menu-inner py-1">
+
+                    <!-- Dashboard -->
+                    <li class="menu-item active">
+                        <a href={% url 'home' %} class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Analytics">Home</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item active">
+                        {% if login_student.is_authenticated %}
+                        <a href={% url 'signout' %} class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Analytics">Logout</div>
+                        </a>
+                        {% else %}
+                        <a href={% url 'signin' %} class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Analytics">Login</div>
+                        </a>
+                        <a href={% url 'signup' %} class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Analytics">Signup</div>
+                        </a>
+                        {%endif%}
+                    </li>
+
+                    <!-- Layouts -->
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">수강강의 목록</span>
+                    </li>
+                    
+                    <li class="menu-item">
+                        
+                    </li>
+                    
+                </ul>
+            </aside>
+            <!-- / Menu -->
+
+            <!-- Layout container -->
+            <div class="layout-page">
+                <!-- Navbar -->
+                <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+                    id="layout-navbar">
+                    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0   d-xl-none ">
+                        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                            <i class="bx bx-menu bx-sm"></i>
+                        </a>
+                    </div>
+                    <div class="navtitle">
+                        <div class="nav_attitude">
+                            <!-- 집중도 x이상이하일때, 금쪽이 은쪽이 흑쪽이 -->
+                            {{login_student.name}}님, 아직 수강중인 강의가 없어요!
+                        </div>
+                    </div>
+                </nav>
+                <!-- / Navbar -->
+
+
+
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+
+                    <!-- Content -->
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+                                <div class="card">
+                                    <div class="d-flex align-items-end row">
+                                        <div class="col-sm-7">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-primary">총 학습시간</h5>
+                                                <p class="total_time">
+                                                    
+                                                </p>
+                                                <p class="mb-4">You have done <span class="fw-bold">72%</span> more
+                                                    sales today. Check your new badge in your profile.</p>
+
+                                                <a href="javascript:;" class="btn btn-sm btn-outline-primary">View
+                                                    Badges</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+                                <div class="card">
+                                    <div class="d-flex align-items-end row">
+                                        <div class="col-sm-7">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-primary">학습분석</h5>
+                                                <p class="mb-4">You have done <span class="fw-bold">72%</span> more
+                                                    sales today. Check your new badge in your profile.</p>
+
+                                                <a href="javascript:;" class="btn btn-sm btn-outline-primary">View
+                                                    Badges</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+                                <div class="card">
+                                    <div class="d-flex align-items-end row">
+                                        <div class="col-sm-7">
+                                            <div class="card-body">
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <div class="avatar avatar-online">
+                                                            <!-- 이미지 -->
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex-grow-1">
+                                                        <span class="fw-semibold d-block">{{login_student.name}}</span>
+                                                        <small class="text-muted">{{login_student.id}}</small>
+                                                        <small class="text-muted">{{login_student.email}}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <!-- 분석차트 -->
+                            <div class="col-md-5">
+                                <div class="card">
+                                    <h5 class="card-header m-0 me-2 pb-3">강의별 강의시간대비 평균 수강시간</h5>
+                                    <!-- <p>실제강의시간 / 학습시간 비율의 평균값</p> -->
+                                    
+                                        <canvas id="myChartOne" style="position: relative; height:25vh; width:auto;">
+                                        </canvas>
+                                    
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <h5 class="card-header">강의별 복습추천구간 비율</h5>
+                                    
+                                        <canvas id="myChartTwo" style="position: relative"; height:40vh; width:40vw;>
+                                        </canvas>
+                                
+                                    
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+
+
+                        <!-- / Content -->
+
+
+
+
+
+                        <!-- Footer -->
+                        <footer class="content-footer footer bg-footer-theme">
+                            <div
+                                class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                                <div class="mb-2 mb-md-0">
+                                    © 2022. Academic-ENFP Co. all rights reserved.
+                                </div>
+                            </div>
+                        </footer>
+                        <!-- / Footer -->
+                    </div>
+                    <!-- Content wrapper -->
+                </div>
+                <!-- / Layout page -->
+            </div>
+
+
+
+            <!-- Overlay -->
+            <div class="layout-overlay layout-menu-toggle"></div>
+
+
+        </div>
+        <!-- / Layout wrapper -->
+
+
+
+
+        <!-- Core JS -->
+        <!-- <script src="../static/js/home.js" type="text/javascript"></script> -->
+        
+
+        <!-- Place this tag in your head or just before your close body tag. -->
+        <!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
+
+</body>
+
+</html>
+
+{% endblock %}

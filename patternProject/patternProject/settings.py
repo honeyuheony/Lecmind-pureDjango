@@ -98,7 +98,7 @@ TEMPLATES = [
     },
 ]
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'templates', 'static')
+    os.path.join(BASE_DIR, 'static')
 ]
 
 STATIC_URL = 'static/'
@@ -148,9 +148,9 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 

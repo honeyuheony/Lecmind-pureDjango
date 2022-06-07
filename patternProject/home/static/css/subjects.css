@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'SLEIGothicTTF';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SLEIGothicTTF.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 .subjectTitle{
     padding: 10px 10px;
     background-color: #f4f5fe;
@@ -9,6 +17,7 @@
 .bigTitle{
     padding: 10px 10px;
     font-size: xx-large;
+    font-family: 'SLEIGothicTTF';
     text-align: center;
 }
 
@@ -19,5 +28,30 @@
 
 #lec_Title{
     font-size: initial;
+    font-family: 'SLEIGothicTTF';
     color: #696cff !important;
+    background-color: aliceblue;
+}
+
+.nav_attitude{
+    font-size: x-large;
+    text-align: center;
+}
+
+.navtitle{
+    font-size: x-large;
+    font-family: 'SLEIGothicTTF';
+    text-align: center;
+}
+
+body{
+    font-family: 'SLEIGothicTTF';
+}
+
+aside{
+    font-family: 'SLEIGothicTTF';
+}
+
+.card{
+    font-family: 'SLEIGothicTTF';
 }
