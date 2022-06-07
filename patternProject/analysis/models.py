@@ -8,7 +8,6 @@ class Analysis(models.Model):
     lecture = models.ForeignKey(
         Lecture, on_delete=models.CASCADE, related_name='analysis_lecture')
     concentration_rate = models.FloatField()
-    review_section = models.CharField(max_length=20)
     
     def __str__(self):
         return self.anlysis_idx
@@ -29,3 +28,13 @@ class Interaction(models.Model):
     
     def __str__(self):
         return str(self.interaction_idx)
+
+class Review_section(models.Model):
+    review_section_idx = models.AutoField(primary_key=True)
+    lecture = models.ForeignKey(
+        Lecture, on_delete=models.CASCADE, related_name='reviewsection_lecture')
+    section_start = models.CharField(max_length=20)
+    section_end = models.CharField(max_length=20)
+    
+    def __str__(self):
+        return str(self.review_section_idx)

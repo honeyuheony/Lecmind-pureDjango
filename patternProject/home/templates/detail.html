@@ -125,16 +125,11 @@
                             <i class="bx bx-menu bx-sm"></i>
                         </a>
                     </div>
-                    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-                        <ul class="navbar-nav flex-row align-items-center ms-auto">
-                            <!-- 이동버튼 -->
-                            <li class="nav-item lh-1 me-3">
-                                <a class="github-button"
-                                    href="https://github.com/themeselection/sneat-html-admin-template-free"
-                                    data-icon="octicon-star" data-size="large" data-show-count="true"
-                                    aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">Star</a>
-                            </li>
-                        </ul>
+                    <div class="navtitle">
+                        <div class="nav_attitude">
+                            <!-- 집중도 x이상이하일때, 금쪽이 은쪽이 흑쪽이 -->
+                            {{login_student.name}}님의 < {{current_lecture.name}} > 수업태도는 "금쪽이"
+                        </div>
                     </div>
                 </nav>
                 <!-- / Navbar -->
@@ -465,7 +460,20 @@
             var spot = document.createElement("li");
             spot.setAttribute('time-spot', '00:00'); //(속성명:속성값(초기값)) , 데이터 삽입
             spot_list.append(spot);
+
+            spot.forEach((spot,idx)=>{
+            
+            })
         }
+
+       // 초 단위 
+        let start_time=0;
+        let end_time;
+
+        // :nth-last-child or setAttribute속성이용해서 위치 지정하기
+        spot.forEach((spot,idx)=>{
+
+        })
 
 
         // // 타임스탬프

@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
+from numpy import empty
 # from patternProject.subject.views import learning
 
 from subject.models import Lecture, Subject
@@ -26,26 +27,29 @@ def home(request):  #cur_lectureID
     # print(lectures)
     # all_lecture = Lecture.objects.filter(subject = subject_lecture.name)
     # all_lectures = Subject.prefetch_related('lecture_set')
-    
-    tmp = []
-    for lecture in all_subject:
-        tmp.append(Lecture.objects.filter(subject=lecture)) 
-    
-    all_lectures= tmp[0]
-    for lec in tmp:
-        all_lectures = all_lectures|lec
-    
-    lecture_info = Lecture.objects.all()
-    context = {
-        'lecture_info':lecture_info,
-        'all_subject':all_subject,
-        'login_student':login_student,
-        'all_lectures': all_lectures
-        # 'all_lecture': all_lecture
-        # 'current_lecture':current_lecture
-    }
-    return render(request, 'home.html', context)
-    # return render(request, 'home.html')
+    if not all_subject.exists():
+        return render(request, 'init.html', {'login_student':login_student})
+    else:
+        tmp = []
+        for lecture in all_subject:
+            tmp.append(Lecture.objects.filter(subject=lecture)) 
+        
+        all_lectures= tmp[0]
+        print(all_lectures)
+        for lec in tmp:
+            all_lectures = all_lectures|lec
+        
+        lecture_info = Lecture.objects.all()
+        context = {
+            'lecture_info':lecture_info,
+            'all_subject':all_subject,
+            'login_student':login_student,
+            'all_lectures': all_lectures
+            # 'all_lecture': all_lecture
+            # 'current_lecture':current_lecture
+        }
+        return render(request, 'home.html', context)
+        # return render(request, 'home.html')
 
 
 def signup(request):
