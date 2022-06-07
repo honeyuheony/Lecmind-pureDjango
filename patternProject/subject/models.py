@@ -6,11 +6,7 @@ class Subject(models.Model):
     idx = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
     student = models.ForeignKey(
-<<<<<<< HEAD
-        User, on_delete=models.CASCADE, related_name='subject_student'
-=======
         User, on_delete=models.CASCADE, related_name='Subject_student'
->>>>>>> 5d425e0c54a5757aa3a27ef1d4b8fa11a4aff803
     )
     pf_name = models.CharField(null=True, blank=True, max_length=20)
     create_date = models.DateField(auto_now_add=True)
