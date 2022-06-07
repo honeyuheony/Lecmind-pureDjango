@@ -45,13 +45,15 @@ INSTALLED_APPS = [
     'chrome.apps.ChromConfig',
     'rest_framework',
     'corsheaders',
-    
-     #allauth
+    'rest_framework_jwt',
+    'rest_framework_jwt.blacklist',
+
+    # allauth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
 
-    #provider 구글 페이스북 카톡 깃허브 등 소셜로그인 제공업체
+    # provider 구글 페이스북 카톡 깃허브 등 소셜로그인 제공업체
     'allauth.socialaccount.providers.google',
 ]
 
@@ -63,12 +65,18 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = (
-    'https://localhost:3000',
-)
+CSRF_TRUSTED_ORIGINS = ['chrome-extension://*']
+
+# CORS_ORIGIN_WHITELIST = (
+#     'https://localhost:3000',
+#     # 'chrome-extension://',
+#     '*',
+#     'https://www.youtube.com',
+# )
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'patternProject.urls'
 
@@ -153,7 +161,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -161,17 +168,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # # Pagination 페이지네이션 사용
-# REST_FRAMEWORK ={
-#     'DEFAULT_AUTHENTICATION_CLASSES': [
-#         'rest_framework.authentication.BasicAuthentication',
-#         'rest_framework.authentication.SessionAuthentication',
-#     ],
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
 
 AUTHENTICATION_BACKENDS = (
-    #Needed to login by username in Django admin, regardless of 'allauth'
+    # Needed to login by username in Django admin, regardless of 'allauth'
     'django.contrib.auth.backends.ModelBackend',
-    
+
     # 'allauth' specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 )
@@ -191,3 +202,10 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+# celery
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

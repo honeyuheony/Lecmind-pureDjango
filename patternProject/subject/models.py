@@ -5,7 +5,7 @@ from home.models import User
 class Subject(models.Model):
     name = models.CharField(primary_key=True, max_length=50)
     student = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='student'
+        User, on_delete=models.CASCADE, related_name='Subject_student'
     )
     pf_name = models.CharField(null=True, blank=True, max_length=20)
     create_date = models.DateField(auto_now_add=True)
@@ -19,11 +19,15 @@ class Lecture(models.Model):
         ('ongoing', 'ongoing'),
         ('completed','completed')
     )
+    student = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='Lecture_student'
+    )
     subject = models.ForeignKey(
         Subject, on_delete=models.CASCADE, related_name='subject_lecture')
     name = models.CharField(max_length=30)
     degree = models.IntegerField(null=True, blank=True)
     create_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
     complet_date = models.DateTimeField(null=True, blank=True)
     lecture_time = models.CharField(null=True, blank=True, max_length=20)
     learning_time = models.CharField(max_length=20, null=True, blank=True)
