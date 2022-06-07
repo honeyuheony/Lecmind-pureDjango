@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/signup.css' %}">
+
+{% load socialaccount %}
+<!-- <form action="" method="POST" enctype="multipart/form-data" class = "box" > -->
+<!-- {% csrf_token %} -->
+<!-- {{regi_form.as_table}} -->
+<!-- <input type="submit" value="회원가입"> -->
+<!-- </form> -->
+
+<div class="container">
+    <div class="form-container">
+        <form action="" method="POST" enctype="multipart/form-data" class="box">
+            {% csrf_token %}
+            <div class="title">
+                <h1>Sign Up</h1>
+            </div>
+            
+            <!-- {{regi_form.as_table}} -->
+
+
+            {% for field in regi_form %}
+            <div class="fieldWrapper">
+                {{ field.errors }}
+                {{ field.label_tag }}
+
+                <div class="signup">
+                    {{ field }}
+                </div>
+            </div>
+            {% endfor %}
+            <p><input id="submit_signin" type="submit" value="회원가입" /></p>
+            <!-- {{regi_form.}} -->
+
+            <div class="notice">
+                <a>📢 password can’t be too similar to your other personal information.</a><br>
+                <a>Your password must contain at least 8 characters.</a><br>
+                <a>Your password can’t be a commonly used password.</a><br>
+                <a>Your password can’t be entirely numeric.</a>
+               
+            </div>
+
+
+
+
+
+
+            <!-- <h1>Sign in</h1>
+                <div class="social-container">
+                </div>
+                
+                <div class="input-box">
+                    <div id="id_title">id</div>
+                    <input class="singin" type="text" name="id" placeholder="id"></input>
+                </div>
+    
+                <div class="input-box">
+                    <div id="password_title">password</div>
+                    <input class="singin" type="password" name="password" placeholder="password"></input>
+                </div>
+            
+                <input id="submit_signin" type="submit" value="Submit">
+                <a id="google_sigin" href="{% provider_login_url 'google' %}">
+                    
+                    Sign in with Google    
+                </a> -->
+        </form>
+    </div>
+
+
+
+
+    <!-- </div> -->
+</div>
+
+
+
+
+{% endblock %}

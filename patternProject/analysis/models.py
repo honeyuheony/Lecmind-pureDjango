@@ -3,17 +3,22 @@ from subject.models import Lecture
 
 # Create your models here.
 
+
+class Review_section(models.Model):
+    review_section_idx = models.AutoField(primary_key=True)
+    lecture = models.ForeignKey(
+        Lecture, on_delete=models.CASCADE, related_name='review_section_lecture')
+    section_start = models.CharField(max_length=20)
+    section_end = models.CharField(max_length=20)
+    
+    def __str__(self):
+        return self.review_section_idx
+
 class Analysis(models.Model):
     anlysis_idx = models.AutoField(primary_key=True)
     lecture = models.ForeignKey(
         Lecture, on_delete=models.CASCADE, related_name='analysis_lecture')
-    concentration_rate = models.FloatField()
     
-    def __str__(self):
-        return self.anlysis_idx
-
-class Interaction(models.Model):
-    interaction_idx = models.AutoField(primary_key=True)
     EVENT = (
         ('pause','pause'),
         ('redo','redo'),

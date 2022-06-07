@@ -14,6 +14,12 @@ from .models import User
 from .forms import UserForm
 # Create your views here.
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework_jwt.settings import api_settings
+
+jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
 
 def home(request):  #cur_lectureID
     login_student = request.user
@@ -62,18 +68,23 @@ def signup(request):
         return redirect('signup')
     return render(request, 'signup.html', {'regi_form':user_form})
 
-
+@csrf_exempt
 def signin(request):
-    # if str(request.user) != 'AnonymousUser':
-    #     return redirect('home') # 일단 로그인 시 home으로 가도록 지정
+    if str(request.user) != 'AnonymousUser':
+        return redirect('home') # 일단 로그인 시 home으로 가도록 지정
     
     if request.method == "POST":
         id = request.POST.get('id','')
         password = request.POST.get('password','')
         user = authenticate(request, id=id, password=password)
         if user is not None:
+            response = redirect('home')
             login(request, user)
-            return redirect('home')
+            payload = jwt_payload_handler(user)
+            token = jwt_encode_handler(payload)
+            response.set_cookie(key = 'Authorization', value = f'{token}')
+            request.session['id'] = id
+            return response
     return render(request, 'signin.html')
 
 def signout(request):
@@ -132,6 +143,7 @@ def detail(request,id):
 @login_required
 def signout(request):
     logout(request)
+    request.COOKIES.Authorization = ''
     return redirect('signin')
 
 # 수강과목 리스트
