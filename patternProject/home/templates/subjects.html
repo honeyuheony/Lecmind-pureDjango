@@ -105,9 +105,9 @@
                     </li>
                     {% for sub in all_subject %}
                     <li class="menu-item">
-                        <a href={% url 'subject' sub.name %} class="menu-link menu-toggle">
+                        <a href={% url 'subject' sub %} class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                            <div data-i18n="Account Settings">{{sub.name}}</div>
+                            <div data-i18n="Account Settings">{{sub}}</div>
                         </a>
                     </li>
                     {%endfor%}
@@ -126,7 +126,7 @@
                     <div class="navtitle">
                         <div class="nav_attitude">
                             <!-- 집중도 x이상이하일때, 금쪽이 은쪽이 흑쪽이 -->
-                            {{login_student.name}}님의 <{{current_subject.name}}> 수업태도는 "금쪽이"
+                            {{login_student.name}}님의 <{{current_subject.subject}}> 수업태도는 "금쪽이"
                         </div>
                     </div>
                 </nav>
@@ -145,7 +145,7 @@
                                     <div class="subjectTitle">
                                         <h5 class="card-title text-primary">
                                             <div class="bigTitle">
-                                                {{current_subject.name}}
+                                                {{current_subject.subject}}
                                             </div>
                                         </h5>
                                         <p>{{current_subject.pf_name}} 교수님</p>
@@ -181,7 +181,7 @@
 
 
                             <!-- 세부강의 -->
-                            {% for lecture in all_lecture %}
+                            {% for lecture in subOFlecturs %}
                             <div class="order-2 col-md-4 mb-4">
                                 <div class="card">
                                     <div class="lec_card">

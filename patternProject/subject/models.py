@@ -24,7 +24,7 @@ class Lecture(models.Model):
     video_id = models.CharField(max_length=200)
     
     def __str__(self):
-        return self.idx
+        return str(self.idx)
 
 class Notes(models.Model):
     idx = models.AutoField(primary_key=True)
@@ -34,7 +34,7 @@ class Notes(models.Model):
     content = models.CharField(max_length=500)
     
     def __str__(self):
-        return self.idx
+        return str(self.idx)
 
 
     

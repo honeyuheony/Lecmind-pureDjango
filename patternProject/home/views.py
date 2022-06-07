@@ -37,18 +37,24 @@ def home(request):  #cur_lectureID
     
     all_lectures= Lecture.objects.filter(student=login_student)
     all_subject = []
-    for l in all_lectures:
-        all_subject.append(l.student)
-    all_subject = set(all_subject)
-    lecture_info = Lecture.objects.all()
-    context = {
-        'lecture_info':lecture_info,
-        'all_subject':all_subject,
-        'login_student':login_student,
-        'all_lectures': all_lectures
-        # 'all_lecture': all_lecture
-        # 'current_lecture':current_lecture
-    }
+    
+    if not all_lectures.exists():
+        return render(request, 'init.html', {'login_student':login_student})
+    else:
+        for l in all_lectures:
+            all_subject.append(l.subject)
+        all_subject = set(all_subject)
+        
+        print(all_subject)
+        lecture_info = Lecture.objects.all()
+        context = {
+            'lecture_info':lecture_info,
+            'all_subject':all_subject,
+            'login_student':login_student,
+            'all_lectures': all_lectures
+            # 'all_lecture': all_lecture
+            # 'current_lecture':current_lecture
+        }
     return render(request, 'home.html', context)
     # return render(request, 'home.html')
 
@@ -86,34 +92,53 @@ def signout(request):
     return render(request, 'signin.html')
 
 
+@login_required
 def subject(request, sub):
     login_student = request.user
-    all_subject = Subject.objects.filter(student=login_student)
-    current_subject = Subject.objects.get(name=sub)
-    all_lecture = Lecture.objects.filter(subject=current_subject).order_by('degree')
+    all_lectures= Lecture.objects.filter(student=login_student).order_by('degree')
+    
+    all_subject = set()
+    for l in all_lectures:
+        all_subject.add(l.subject)
+    
+    subOFlecturs = Lecture.objects.filter(subject=sub)
+
+    # all_subject = Subject.objects.filter(student=login_student)
+    current_subject = Lecture.objects.filter(subject=sub).first()
+    print(current_subject)
+   
+    # print(current_subject)
+    # all_lecture = Lecture.objects.filter(subject=current_subject).order_by('degree')
     
     
-    lecture_info = Lecture.objects.all()
+    # lecture_info = Lecture.objects.all()
     
     context = {
         'login_student':login_student,
         'all_subject':all_subject,
-        'all_lecture':all_lecture,
-        'current_subject':current_subject
+        'all_lectures':all_lectures,
+        'current_subject':current_subject,
+        'subOFlecturs':subOFlecturs
     }
     return render(request, 'subjects.html', context)
 
 def detail(request,id):
+    login_student = request.user
     current_lecture = Lecture.objects.get(video_id=id)
-    cl_subject = current_lecture.subject
+    current_subject = current_lecture.subject
     
-    lecture_subject = Subject.objects.filter(student=request.user)
+    # lecture_subject = Subject.objects.filter(student=request.user)
     
-    all_lecture = Lecture.objects.filter(subject=cl_subject)
+    all_lecture = Lecture.objects.filter(subject=current_subject)
+    all_lectures= Lecture.objects.filter(student=login_student)
+    
+    all_subject = set()
+    for l in all_lectures:
+        all_subject.add(l.subject)
    
     # user = Lecture.objects.get()
     lecture_info = Lecture.objects.all()
-    login_student = request.user
+    
     # print(login_student)
     # total_time = current_lecture.lecturetime
     # tt = total_time.split(':')
@@ -124,7 +149,8 @@ def detail(request,id):
         'current_lecture':current_lecture,
         'login_student':login_student,
         'all_lecture':all_lecture,
-        'lecture_subject':lecture_subject
+        'current_subject':current_subject,
+        'all_subject':all_subject
     }
     
     # print(current_lecture)

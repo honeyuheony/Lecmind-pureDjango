@@ -103,9 +103,9 @@
                     </li>
                     {% for sub in all_subject %}
                     <li class="menu-item">
-                        <a href={% url 'subject' sub.name %} class="menu-link menu-toggle">
+                        <a href={% url 'subject' sub %} class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                            <div data-i18n="Account Settings">{{sub.name}}</div>
+                            <div data-i18n="Account Settings">{{sub}}</div>
                         </a>
                     </li>
                     {%endfor%}

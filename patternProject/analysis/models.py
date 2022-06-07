@@ -12,7 +12,7 @@ class Review_section(models.Model):
     section_end = models.CharField(max_length=20)
     
     def __str__(self):
-        return self.review_section_idx
+        return str(self.review_section_idx)
 
 class Analysis(models.Model):
     anlysis_idx = models.AutoField(primary_key=True)
@@ -23,7 +23,7 @@ class Analysis(models.Model):
     concentration_rate = models.FloatField(null=True, blank=True)
 
     def __str__(self):
-        return self.anlysis_idx
+        return str(self.anlysis_idx)
     
 
 
