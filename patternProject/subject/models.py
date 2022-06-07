@@ -2,19 +2,6 @@ from django.db import models
 from home.models import User
 # Create your models here.
 
-class Subject(models.Model):
-    idx = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50)
-    student = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='Subject_student'
-    )
-    pf_name = models.CharField(null=True, blank=True, max_length=20)
-    create_date = models.DateField(auto_now_add=True)
-    update_date = models.DateField(auto_now=True)
-    
-    def __str__(self):
-        return self.idx
-
 class Lecture(models.Model):
     idx = models.AutoField(primary_key=True)
     choice_state = (
@@ -24,12 +11,9 @@ class Lecture(models.Model):
     student = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='Lecture_student'
     )
-    subject = models.ForeignKey(
-        Subject, on_delete=models.CASCADE, related_name='subject_lecture')
-    student = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='lecture_student'
-    )
-    name = models.CharField(max_length=100)
+    pf_name = models.CharField(null=True, blank=True, max_length=20)
+    subject = models.CharField(null=True, blank=True, max_length=20)
+    name = models.CharField(max_length=30)
     degree = models.IntegerField(null=True, blank=True)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)

@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('review_section_idx', models.AutoField(primary_key=True, serialize=False)),
                 ('section_start', models.CharField(max_length=20)),
                 ('section_end', models.CharField(max_length=20)),
-                ('lecture', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviewsection_lecture', to='subject.lecture')),
+                ('lecture', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='review_section_lecture', to='subject.lecture')),
             ],
         ),
         migrations.CreateModel(
@@ -36,7 +36,9 @@ class Migration(migrations.Migration):
             name='Analysis',
             fields=[
                 ('anlysis_idx', models.AutoField(primary_key=True, serialize=False)),
-                ('concentration_rate', models.FloatField()),
+                ('total_frames', models.IntegerField(blank=True, null=True)),
+                ('focus_frames', models.IntegerField(blank=True, null=True)),
+                ('concentration_rate', models.FloatField(blank=True, null=True)),
                 ('lecture', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='analysis_lecture', to='subject.lecture')),
             ],
         ),
