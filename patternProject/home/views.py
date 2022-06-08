@@ -1,6 +1,5 @@
 import datetime
-from operator import le
-from re import A, sub
+import imp
 from unicodedata import name
 from unittest import result
 from django.shortcuts import get_object_or_404, render, redirect
@@ -12,6 +11,7 @@ from numpy import empty
 
 from subject.models import Lecture
 from .models import User
+from analysis.models import Review_section
 from .forms import UserForm
 # Create your views here.
 from django.http import HttpResponse
@@ -127,33 +127,28 @@ def detail(request,id):
     current_lecture = Lecture.objects.get(video_id=id)
     current_subject = current_lecture.subject
     
-    # lecture_subject = Subject.objects.filter(student=request.user)
-    
     lectureOFsubject = Lecture.objects.filter(subject=current_subject)
     all_lectures= Lecture.objects.filter(student=login_student)
-    
-    print(lectureOFsubject)
     
     all_subject = set()
     for l in all_lectures:
         all_subject.add(l.subject)
-   
-    # user = Lecture.objects.get()
-    lecture_info = Lecture.objects.all()
     
-    # print(login_student)
-    # total_time = current_lecture.lecturetime
-    # tt = total_time.split(':')
-    # print(tt)
+    # 분석 데이터
+    review_section = Review_section.objects.filter(lecture=current_lecture)
+    
+    # js용 정보
+    cl_lec_lnt = current_lecture.lecture_time
     
     context = {
-        'lecture_info':lecture_info,
         'current_lecture':current_lecture,
         'login_student':login_student,
         'all_lectures':all_lectures,
         'current_subject':current_subject,
         'all_subject':all_subject,
-        'lectureOFsubject':lectureOFsubject
+        'lectureOFsubject':lectureOFsubject,
+        'review_section':review_section,
+        'cl_lec_lnt':cl_lec_lnt
     }
     
     # print(current_lecture)

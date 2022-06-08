@@ -203,18 +203,20 @@
                                         <div class="col-md-9">
                                             <h5 class="card-header m-0 me-2 pb-3">타임스탬프</h5>
                                             <!-- js 함수추가 -->
-                                            <input type="button" id="btn_add" onclick="makeSpot()" value="추가" />
-                                            <ul class="timeline">
-                                                <div class="start-line"></div>
-                                                <div class="end-line"></div>
-                                                <li time-spot="20:17"></li>
-                                                <li time-spot="20:18"></li>
-                                                <li time-spot="20:19"></li>
-                                                <li time-spot="20:20"></li>
-                                                <li time-spot="20:21"></li>
-                                                <li time-spot="20:17"></li>
+                                            <div class="candiv">
+                                                <canvas id="stampCanvas">
+                                            </canvas>
+                                            </div>
 
+                                            
+                                            <ul class="timeline">
+                                                <div class="sEMT"></div>
+                                                <div class="eline"></div>
+                            
                                             </ul>
+
+                                            
+                                            
                                         </div>
                                         <div class="col-md-3">
                                             <div class="card-body">
@@ -224,7 +226,7 @@
                                                         <div class="lectuer-info">
                                                             <p>과목 : {{current_lecture.subject}} </p>
                                                             <p>강의제목 : {{current_lecture.name}} </p>
-                                                            <p>멈춤 횟수: </p>
+                                                            <p>멈춤 횟수: 17</p>
                                                             <p>되감기 횟수: </p>
                                                             <p>시청 속도: </p>
                                                             <p>학습시작 일<br>{{current_lecture.create_date}}</p>
@@ -326,6 +328,7 @@
     <!-- Core JS -->
     <!-- <script src="../static/js/detail.js" type="text/javascript"></script> -->
     <script>
+        const canvas = document.getElementById('stampCanvas');
         let chartOne = document.getElementById('chartOne').getContext('2d');
         let chartTwo = document.getElementById('chartTwo').getContext('2d');
 
@@ -342,8 +345,20 @@
                 },
                 {% endfor %}
             ]
-            
         
+        var section = [
+                {% for section in review_section %} {
+                    idx : "{{section.idx}}",
+                    lecture: {{section.lecture}},
+                    start: "{{section.section_start}}",
+                    end : "{{section.section_end}}",
+                },
+                {% endfor %}
+            ]
+        
+        var cur_lecT = "{{cl_lec_lnt}}";
+        
+        // 차트 그리기
         function str2time(str){
             let res=0;
             if(str.length==3){
@@ -353,7 +368,6 @@
             }else{
                 res = Number(str[0]);
             }
-            console.log(res)
             return res
         }
 
@@ -450,31 +464,155 @@
             })
         }
 
-       // 초 단위 
-        let start_time=0;
-        let end_time;
+        var spot_list = document.querySelector('.timeline');
+        var spot = document.createElement("li");
+        var spot2 = document.createElement("li");
+        
 
+        /*for(let i=0; i<section.length; i++){
+            var spot = document.createElement("li");
+            spot.setAttribute('time-spot', section[i].start); //(속성명:속성값(초기값)) , 데이터 삽입
+            spot_list.append(spot);
+        }*/
+
+
+        
+
+       
         // :nth-last-child or setAttribute속성이용해서 위치 지정하기
-        spot.forEach((spot,idx)=>{
+    
+        function str2Mintime(str){
+            let min=0;
+            if(str.length==3){
+                min = Number(str[0])*60 + Number(str[1]) + Number(str[2])/60;
+            }else if(str.length==2){
+                min = Number(str[0]) + Number(str[1])/60;
+            }else{
+                min = 0;
+            }
+            return min
+        }
+        
+        window.onload = function(e) {
+            _canvas = document.getElementById('stampCanvas').getContext("2d");        
+            setCanvasSize();
+            drawCanvas()
+        }
+        
+        window.onresize = function(e) {
+            _canvas = document.querySelector("#stampCanvas");        
+            setCanvasSize();
+        }
+        
+        function setCanvasSize() {
+            var target = document.getElementById('stampCanvas');
+            target.width = target.parentElement.offsetWidth;
+            target.height = target.parentElement.offsetHeight;
+        }
+        // 1. 선 그리기
+        function drawCanvas() {
+            var target = document.getElementById('stampCanvas');
+            _canvas.lineWidth = 3 ;
+            _canvas.scale(window.devicePixelRatio, window.devicePixelRatio);
+            _canvas.beginPath();
+            _canvas.strokeStyle = '#b5b7bb';
+            _canvas.moveTo(0,60);
+            _canvas.lineTo(target.width, 60);
+            _canvas.stroke();
 
-        })
+            //start지점
+            _canvas.moveTo(0,45);
+            _canvas.lineTo(0,75);
+            _canvas.stroke();
 
+            //end지점
+            _canvas.moveTo(target.width, 45);
+            _canvas.lineTo(target.width, 75);
+            _canvas.stroke();
 
-        // // 타임스탬프
-        // ctx.beginPath();
-        // ctx.moveTo(0,0);
-        // ctx.lineTo(600,0);
-        // ctx.stroke();
+            var pos1=[];
+            var pos2=[];
 
-        // //start지점
-        // ctx.moveTo(40,40);
-        // ctx.lineTo(40,60);
-        // ctx.stroke();
+            let totalMinTime = str2Mintime(cur_lecT.split(":"));
+            let offset = target.width / totalMinTime
+            console.log(offset)
+    
+            for(let i=0; i<section.length; i++){
+                let word = section[i].start
+                let sp = section[i].start.split(":");
+                let ep = section[i].end.split(":");
+                let len = ep[0]-sp[0];
+    
+                /*if(len<=1){      // 1분 이하일때
+                    drawspot(offset, sp[0], pos1);
+                }else{
+                    drawspot2(offset, sp[0], len, pos2);   
+                }*/
+                drawspot2(offset, sp[0], len, pos2, word);   
+            }
+    
+            canvas.addEventListener('click', function (event) {  //클릭 이벤트
+                var x1 = event.clientX - canvas.getBoundingClientRect().left;
+                var y1 = event.clientY - (canvas.getBoundingClientRect().top) - 20;
+                var result = isInsideRect(x1, y1, pos2);    
+                console.log(result);
+            });
+        }
+        //var pos1 = [{x:offset*Number(sp), y:60, r:3, c1:0, c2:Math.PI * 2}]
+        //var pos2 = [{x:offset*Number(sp), y:58, w:4*len, h:4}]
+        // 2. 점들 값 넣어서 찍기
+        function drawspot(offset, sp, pos1){
+            _canvas.beginPath();
+            /*_canvas.arc(offset*Number(sp),60,3, 0, Math.PI * 2);
+            _canvas.stroke();
+            _canvas.fillStyle = '#74b9fa';
+            _canvas.fill();*/
+            var point = {x:offset*Number(sp), y:60, r:3, c1:0, c2:Math.PI * 2}
+            _canvas.arc(point.x, point.y, point.r, point.c1, point.c2);
+            _canvas.stroke();
+            _canvas.fillStyle = '#74b9fa';
+            _canvas.fill();
+            pos1.push(point)
 
-        // //end지점
-        // ctx.moveTo(600,40);
-        // ctx.lineTo(600,60);
-        // ctx.stroke();
+        };
+
+        function drawspot2(offset, sp, len, pos2, word){
+            /*_canvas.fillStyle = '#ffa0a0';
+            _canvas.fillRect(offset*Number(sp),58,4*len,4);*/
+    
+            var point = {x:offset*Number(sp), y:54, w:offset*len, h:12}
+            _canvas.fillStyle = '#ffa0a0'
+            _canvas.fillRect(point.x, point.y, point.w, point.h)
+            _canvas.fillStyle = 'gray'
+            _canvas.fillText( word,point.x, point.y-5, 50);
+
+            pos2.push(point)
+
+        };
+
+        function isInsideRect(x1, y1, pos2){  //x1은 클릭한 X값, y1은 클릭한 y값
+            var result = false; 
+            var index = -1;
+            for(var i=0; i < pos2.length;i++){ //사각형이 담긴 배열
+                var data = pos2[i];
+                var start_x = data.x;  //x시작값
+                var end_x = data.x + data.w;  //x시작값 + 넓이
+                var start_y = data.y; //y시작값
+                var end_y = data.y + data.h;  //y시작값 + 높이
+                if(x1 >= start_x && x1 <= end_x){  
+                    if(y1 >= start_y && y1 <= end_y){
+                        result = true;  //들어왔다.
+                        index = i;  //해당 배열 인덱스 번호
+                        break;
+                    }
+                } 
+                console.log(x1, y1, start_x, start_y, end_x, end_y)
+            }
+            return {result:result, index:index};
+        }
+
+        // 타임스탬프
+        
     </script>
 
     <!-- Place this tag in your head or just before your close body tag. -->

@@ -28,7 +28,7 @@
 
 /* 타임라인 */
 
-.timeline {
+/* .timeline {
     width: 90%;
     height: 20px;
     list-style: none;
@@ -36,7 +36,7 @@
     margin: 80px auto;
     background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(45%, rgba(255, 255, 255, 0)), color-stop(51%, rgba(191, 128, 11, 1)), color-stop(57%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(255, 255, 255, 0)));
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 45%, #b5b7bb 51%, rgba(255, 255, 255, 0) 57%, rgba(255, 255, 255, 0) 100%);
-}
+} */
 
 .timeline:after {
     display: inline-block;
@@ -46,9 +46,10 @@
 
 .timeline li {
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    background: #F2BB13;
+    width: 12px;
+    height: 12px;
+    margin-right: auto;
+    /* background: #F2BB13; */
     text-align: center;
     line-height: 1.2;
     position: relative;
@@ -63,6 +64,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    
 }
 
 
@@ -152,10 +154,23 @@
     display: flex;
 } */
 
-canvas {
+#chartOne, #chartTwo {
     display: inline-block;
 }
 
 body{
     font-family: 'SLEIGothicTTF';
+}
+
+/* 타임스탬프 */
+#candiv{
+    width: max-content;
+    height: max-content;
+}
+
+#stampCanvas{
+    width: 100%;
+    padding: 20px 20px;
+    text-align: center;
+    
 }
