@@ -209,13 +209,9 @@
                                                 <canvas id="stampCanvas">
                                             </canvas>
                                             </div>
-
-                                            
-                                            <ul class="timeline">
-                                                <div class="sEMT"></div>
-                                                <div class="eline"></div>
-                            
-                                            </ul>
+                                            <div class="ts-ex">
+                                                <p>{{current_lecture.name}} 학습</p>
+                                            </div>
 
                                             
                                             
@@ -368,8 +364,7 @@
                 },
                 {% endfor %}
             ]
-        
-        console.log(all_section)
+    
         
         var cur_lecT = "{{cl_lec_lnt}}";
         var all_rs = {{all_rs}}
@@ -424,7 +419,6 @@
         };
     
         let barChart = new Chart(chartOne, {
-            
             data: presentSection,
             options: {
                 responsive: false,
@@ -523,13 +517,15 @@
         
         function setCanvasSize() {
             var target = document.getElementById('stampCanvas');
-            target.width = target.parentElement.offsetWidth;
-            target.height = target.parentElement.offsetHeight;
+            //target.width = target.parentElement.clientWidth;
+            //target.height = target.parentElement.clientHeight;
+            target.width = 600;
+            target.height = 250;
         }
         // 1. 선 그리기
         function drawCanvas() {
             var target = document.getElementById('stampCanvas');
-            _canvas.lineWidth = 3 ;
+            _canvas.lineWidth = 2 ;
             _canvas.scale(window.devicePixelRatio, window.devicePixelRatio);
             _canvas.beginPath();
             _canvas.strokeStyle = '#b5b7bb';
@@ -543,16 +539,20 @@
             _canvas.stroke();
 
             //end지점
-            _canvas.moveTo(target.width, 45);
-            _canvas.lineTo(target.width, 75);
+            _canvas.moveTo(436, 45);
+            _canvas.lineTo(436, 75);
             _canvas.stroke();
 
             var pos1=[];
             var pos2=[];
 
             let totalMinTime = str2Mintime(cur_lecT.split(":"));
-            let offset = target.width / totalMinTime
-            console.log(offset)
+            let offset = Math.floor(target.width / Math.floor(totalMinTime));
+            if(totalMinTime>target.width){
+                let offset=1;
+            }
+
+
     
             for(let i=0; i<section.length; i++){
                 let word = section[i].start
@@ -571,6 +571,7 @@
             canvas.addEventListener('click', function (event) {  //클릭 이벤트
                 var x1 = event.clientX - canvas.getBoundingClientRect().left;
                 var y1 = event.clientY - (canvas.getBoundingClientRect().top) - 20;
+                //var y1 = event.clientY - (canvas.getBoundingClientRect().top);
                 var result = isInsideRect(x1, y1, pos2);    
                 console.log(result);
             });
@@ -597,7 +598,7 @@
             /*_canvas.fillStyle = '#ffa0a0';
             _canvas.fillRect(offset*Number(sp),58,4*len,4);*/
     
-            var point = {x:offset*Number(sp), y:54, w:offset*len, h:12}
+            var point = {x:((offset*Number(sp))/2)*1.5, y:54, w:offset*len, h:12}
             _canvas.fillStyle = '#ffa0a0'
             _canvas.fillRect(point.x, point.y, point.w, point.h)
             _canvas.fillStyle = 'gray'
@@ -629,6 +630,7 @@
         }
 
         // 타임스탬프
+       
         
     </script>
 

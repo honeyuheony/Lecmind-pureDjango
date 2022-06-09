@@ -164,12 +164,12 @@ body{
 
 /* 타임스탬프 */
 #candiv{
-    width: max-content;
-    height: max-content;
+    width: auto;
+    height: auto;
 }
 
 #stampCanvas{
-    width: 100%;
+    width: -webkit-fill-available;
     padding: 20px 20px;
     text-align: center;
     

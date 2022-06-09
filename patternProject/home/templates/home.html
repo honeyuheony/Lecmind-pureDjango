@@ -265,13 +265,6 @@
             ]
 
             
-
-            console.log('hi');
-            console.log(lec)
-
-            // 강의목록
-            
-
             
             // 강의별 평균 수강시간
             function str2time(str){
@@ -305,14 +298,10 @@
                 }
             }
 
-            console.log(t_lct)
-
             for(let i=0; i<subject.length; i++){
                 t_lct[i] = Math.round(t_lct[i]/60);
                 t_lnt[i] = Math.round(t_lnt[i]/60);
             }
-            console.log(t_lct)
-
             // 차트1
             var cmpTimeChart = {
                 labels: subject,

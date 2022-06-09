@@ -146,7 +146,6 @@ def subject(request, sub):
     subOFlecturs = Lecture.objects.filter(subject=sub)
     for l in subOFlecturs:
         all_concen += Analysis.objects.filter(lecture=l.idx)
-        print(all_concen)
     
     all_con=0
     for i in all_concen:
@@ -199,19 +198,14 @@ def detail(request,id):
     all_lnt=[]
     for lec in lectureOFsubject:    # 
         rs = Review_section.objects.filter(lecture=lec)
-        print(f'rs {rs}')
         all_lnt.append(round(str2minT(lec.learning_time.split(":")),2)) # 강의 lec의 수강시간
         tmp=0
         for i in rs:
-            print(f'i {i.section_start}')
             sec = str2minT((i.section_end).split(":")) - str2minT((i.section_start).split(":"))
             tmp+=round(sec,2)
         all_rs.append(tmp)  # 강의lec의 모든 reviewsection 구간길이
     
-    print(all_rs)
-    print(all_lnt)
     percent = [int(round(all_rs[i]/all_lnt[i],2)*100) for i in range(len(all_rs))]
-    print(percent)
             
         
     

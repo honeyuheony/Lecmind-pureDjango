@@ -11,7 +11,7 @@ from . import views
 
 urlpatterns = [
     path('videotest', views.videotest, name='videotest'),
-    path('', views.learning, name='learning'),
+    path('<str:video_id>', views.learning, name='learning'),
     path('<str:video_id>', views.learning_test, name='learning_test'),
     
 ]
