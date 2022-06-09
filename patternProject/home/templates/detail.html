@@ -127,8 +127,13 @@
                     </div>
                     <div class="navtitle">
                         <div class="nav_attitude">
-                            <!-- 집중도 x이상이하일때, 금쪽이 은쪽이 흑쪽이 -->
-                            {{login_student.name}}님의 < {{current_lecture.name}} > 수업태도는 "금쪽이"
+                            {% if analysis_data.concentration_rate >= 80 %}
+                            {{login_student.name}}님의 <{{current_subject}}> '{{current_lecture.degree}}차시' 수업태도는 "금쪽이"
+                            {% elif analysis_data.concentration_rate >= 50 and analysis_data.concentration_rate < 80  %}
+                            {{login_student.name}}님의 <{{current_subject}}> '{{current_lecture.degree}}차시' 수업태도는 "은쪽이"
+                            {% else %}
+                            {{login_student.name}}님의 <{{current_subject}}> '{{current_lecture.degree}}차시' 수업태도는 "흑쪽이"
+                            {% endif%}
                         </div>
                     </div>
                 </nav>
@@ -154,14 +159,11 @@
                             <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
                                 <div class="card">
                                     <div class="d-flex align-items-end row">
-                                        <div class="col-sm-7">
+                                        <div>
                                             <div class="card-body">
-                                                <h5 class="card-title text-primary">학습분석</h5>
-                                                <p class="mb-4">You have done <span class="fw-bold">72%</span> more
-                                                    sales today. Check your new badge in your profile.</p>
-
-                                                <a href="javascript:;" class="btn btn-sm btn-outline-primary">View
-                                                    Badges</a>
+                                                <h5 class="total_learn_title">학습 집중도</h5>
+                                                <p class="total_learn">{{analysis_data.concentration_rate}}%</p>
+                                                <p>{{login_student.name}}님의 {{current_subject}} '{{current_lecture.degree}}차시' 집중도입니다.</p>
                                             </div>
                                         </div>
 
@@ -226,7 +228,7 @@
                                                         <div class="lectuer-info">
                                                             <p>과목 : {{current_lecture.subject}} </p>
                                                             <p>강의제목 : {{current_lecture.name}} </p>
-                                                            <p>멈춤 횟수: 17</p>
+                                                            <p>멈춤 횟수: </p>
                                                             <p>되감기 횟수: </p>
                                                             <p>시청 속도: </p>
                                                             <p>학습시작 일<br>{{current_lecture.create_date}}</p>
@@ -335,6 +337,7 @@
         // let timelines = document.getElementById('timelines');
         // var ctx = timelines.getContext('2d');
 
+        
         var lec = [
                 {% for lec in lectureOFsubject %} {
                     subject : "{{lec.subject}}",
@@ -355,6 +358,18 @@
                 },
                 {% endfor %}
             ]
+        
+        var all_section = [
+                {% for all_section in all_review_section %} {
+                    idx : "{{all_section.idx}}",
+                    lecture: {{all_section.lecture}},
+                    start: "{{all_section.section_start}}",
+                    end : "{{all_section.section_end}}",
+                },
+                {% endfor %}
+            ]
+        
+        console.log(all_section)
         
         var cur_lecT = "{{cl_lec_lnt}}";
         

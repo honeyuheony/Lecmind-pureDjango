@@ -123,16 +123,8 @@
                             <i class="bx bx-menu bx-sm"></i>
                         </a>
                     </div>
-                    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-                        <ul class="navbar-nav flex-row align-items-center ms-auto">
-                            <!-- 이동버튼 -->
-                            <li class="nav-item lh-1 me-3">
-                                <a class="github-button"
-                                    href="https://github.com/themeselection/sneat-html-admin-template-free"
-                                    data-icon="octicon-star" data-size="large" data-show-count="true"
-                                    aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">Star</a>
-                            </li>
-                        </ul>
+                    <div class="head">
+                        <h4>{{login_student.name}}님의 HOME</h4>
                     </div>
                 </nav>
                 <!-- / Navbar -->
@@ -148,17 +140,13 @@
                             <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
                                 <div class="card">
                                     <div class="d-flex align-items-end row">
-                                        <div class="col-sm-7">
+                                        <div>
                                             <div class="card-body">
                                                 <h5 class="card-title text-primary">총 학습시간</h5>
                                                 <p class="total_time">
-                                                    {{current_lecture.lecture_time}}
+                                                    <h1>{{all_lnT}} 시간</h1>
                                                 </p>
-                                                <p class="mb-4">You have done <span class="fw-bold">72%</span> more
-                                                    sales today. Check your new badge in your profile.</p>
-
-                                                <a href="javascript:;" class="btn btn-sm btn-outline-primary">View
-                                                    Badges</a>
+                                                <p>{{login_student.name}}님의 모든강의 학습시간입니다.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -167,14 +155,11 @@
                             <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
                                 <div class="card">
                                     <div class="d-flex align-items-end row">
-                                        <div class="col-sm-7">
+                                        <div>
                                             <div class="card-body">
-                                                <h5 class="card-title text-primary">학습분석</h5>
-                                                <p class="mb-4">You have done <span class="fw-bold">72%</span> more
-                                                    sales today. Check your new badge in your profile.</p>
-
-                                                <a href="javascript:;" class="btn btn-sm btn-outline-primary">View
-                                                    Badges</a>
+                                                <h5 class="card-title text-primary">학습 집중도</h5>
+                                                <h1>{{all_con}}%</h1>
+                                                <p>{{login_student.name}}님의 전반적인 강의 집중도입니다.</p>
                                             </div>
                                         </div>
 

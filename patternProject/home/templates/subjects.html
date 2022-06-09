@@ -126,7 +126,13 @@
                     <div class="navtitle">
                         <div class="nav_attitude">
                             <!-- 집중도 x이상이하일때, 금쪽이 은쪽이 흑쪽이 -->
+                            {% if all_con >= 80 %}
                             {{login_student.name}}님의 <{{current_subject.subject}}> 수업태도는 "금쪽이"
+                            {% elif all_con >= 50 and all_con < 80  %}
+                            {{login_student.name}}님의 <{{current_subject.subject}}> 수업태도는 "은쪽이"
+                            {% else %}
+                            {{login_student.name}}님의 <{{current_subject.subject}}> 수업태도는 "흑쪽이"
+                            {% endif%}
                         </div>
                     </div>
                 </nav>
@@ -199,6 +205,9 @@
                                         {%if lecture.state == 'completed' %}
                                         <a href={% url 'detail' lecture.video_id %}
                                             class="btn btn-sm btn-outline-primary">Go to Detailes</a>
+                                        {% else %}
+                                        <a href={% url 'learning' lecture.video_id %}
+                                            class="btn btn-sm btn-outline-primary">Continuing learning</a>
                                         {%endif%}
                                     </div>
 

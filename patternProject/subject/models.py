@@ -6,7 +6,7 @@ class Lecture(models.Model):
     idx = models.AutoField(primary_key=True)
     choice_state = (
         ('ongoing', 'ongoing'),
-        ('completed','completed')
+    ('completed','completed')
     )
     student = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='Lecture_student'
