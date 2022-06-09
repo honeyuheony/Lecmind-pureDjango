@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
@@ -15,6 +16,39 @@ from .permissions import IsOwnerOrReadOnly
 # 학습 동영상 선택
 # 1. 과목방 생성 or 선택 ui를 통해 과목방 name post
 # 2. 강의 url post
+@csrf_exempt
+def set_subject(request):
+    video_id = request.POST.get('video_id')
+    lec = get_object_or_404(Lecture, video_id = video_id)
+    subject = request.POST.get('sub_name')
+    lec.subject = subject
+    lec.save()
+    return redirect(f"/learning/{video_id}")
+
+
+@csrf_exempt
+def create_subject(request):
+    video_id = request.POST.get('video_id')
+    subject = request.POST.get('sub_name')
+    lec, create = Lecture.objects.update_or_create(
+        student = subject,
+        video_id = video_id
+    )
+    lec.subject = subject
+    lec.save()
+    return redirect(f"/learning/{video_id}")
+
+@csrf_exempt
+def finish_learning(request):
+    idx = request.POST.get('idx')
+    lec = get_object_or_404(Lecture, pk = idx)
+    lec.state = 'completed'
+    lec.complet_date = datetime.now()
+    lec.lecture_time = request.POST.get('lecture_time')
+    lec.learning_time = request.POST.get('learning_time')
+    lec.save()
+    return redirect(f"/detail/{lec.video_id}")
+
 
 @csrf_exempt
 def learning(request):
@@ -31,61 +65,17 @@ def learning(request):
     return render(request, 'learning.html', {'lecture':lec})
 
 
-def learning_test(request, video_id = None):
-    if request.method == "POST":
-        # lecture 생성, 이미 있으면 기존 학습 데이터 불러오기
-        lec, create = Lecture.objects.update_or_create(
-            student = request.user.id,
-            url = request.Post.get('video_id')
-        )
-        if lec.lecture_time == None:
-            lec.lecture_time = request.Post.get('video_length')
-        lec.state = 'ongoing'
-        lec.save()
-    else:
-        lec = get_object_or_404(Lecture, pk = video_id)
-    return render(request, 'learning.html', {'lecture':lec})
+def learning_test(request, video_id):
+    id = video_id
+    lec = get_object_or_404(Lecture, video_id = id)
+    subject = Lecture.objects.filter(student = lec.student).values('subject').order_by('subject').distinct()
+    subject = subject.exclude(subject='과목 미지정')
+    return render(request, 'learning.html', {'lecture':lec, 'subject': subject})
 
 @login_required
 def videotest(request):
     return render(request, 'videotest.html')
         
-# # 강의 영상 선택 & 강의 페이지 이동
-# @api_view(['POST'])
-# def video_select():
-#     # 입력받은 강의정보로 lecture 필드 생성
-#     # 입력받은 강의 url 통해 lecture 페이지 이동
-#     pass
-
-# # 학습시작 기록
-# @api_view(['POST'])
-# def start():
-#     pass
-
-# # 학습종료 기록
-# @api_view(['POST'])
-# def finish():
-#     pass
-
-# #결과 페이지 이동
-
-# # 메모 중간저장
-# @api_view(['POST'])
-# def note_autosave():
-#     pass
-
-# # 마이페이지 강의 선택 (user view에 구현)
-# # 복습환경 이동
-
-
-# # 과목 정보 입력받기
-# class SubjectViewSet(ModelViewSet):
-#     queryset = Subject.objects.all()
-#     serializer_class = SubjectSerializer
-#     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
-#     def perform_create(self, serializer):
-#         serializer.save(student = self.request.user)
-
 
 
 # # 입력받은 강의정보로 lecture 필드 생성

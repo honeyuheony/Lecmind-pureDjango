@@ -56,42 +56,40 @@
             </div>
         </div>
 
-        <form>
-            <div class="Memo">
-            <div class="select_nav">
-                <div class="folder_nav" tabindex="1">
-                    <input class="select_folder" name="folder" type="radio" id="default" checked>
-                    <label for="default" class="folder_option">폴더 미지정</label>
-                    <input class="select_folder" name="folder" type="radio" id="opt1">
-                    <label for="opt1" class="folder_option">1</label>
-                    <input class="select_folder" name="folder" type="radio" id="opt2">
-                    <label for="opt2" class="folder_option">2</label>
-                    <input class="select_folder" name="folder" type="radio" id="opt3">
-                    <label for="opt3" class="folder_option">3</label>
-                    <input class="select_folder" name="folder" type="radio" id="opt4">
-                    <label for="opt4" class="folder_option">4</label>
-                </div>
-                <div class="memo_nav">
-                <button class="mymemo_storage">내 문서함</button>
-                <button class="memo_save" type="submit">저장하기</button>
-                </div>
+        <div class="Memo">
+        <div class="select_nav">
+            <div class="folder_nav" tabindex="1">
+                <input class="select_folder" name="folder" type="radio" id="new", value="new">
+                <label for="new" class="folder_option">[새로운 과목 지정]</label>
+                <input class="select_folder" name="folder" type="radio" id="default", value="default" checked>
+                <label for="default" class="folder_option">과목 미지정</label>
+                {% for s in subject %}
+                <input class="select_folder" name="folder" type="radio" id="{{s.subject}}", value="{{s.subject}}">
+                <label for="{{s.subject}}" class="folder_option">{{s.subject}}</label>
+                {% endfor %}
             </div>
-            <div class="writing">
-                <div class="title">
-                    <textarea class="title_input" id="title_input" rows="1" maxlength="50"
-                        placeholder="제목을 입력하세요." autofocus data-autosave-url="https://localhost:8080/autosave"></textarea>
-                </div>
-                <div class="content">
-                    <textarea class="content_input" id="content_input" rows="15" maxlength="1000"
-                        placeholder="작성할 내용을 입력하세요." data-autosave-url="https://localhost:8080/autosave"></textarea>
-                </div>
-                </div>
-                <div class="mycam">
-                    <img src="{% url 'detectme' %}" style="width: 200px;" />
-                </div>
+            <!-- <div class="'create_nav" style="display:none">    
+            </div> -->
+            <div class="memo_nav">
+            <button type="button" class="mymemo_storage">내 문서함</button>
+            <button class="finish_learning">학습 종료</button>
             </div>
-            <!-- {/* <span class="textarea_count">0/1000 (최대 1000자)</span> */} -->
-        </form>
+        </div>
+        <div class="writing">
+            <div class="title">
+                <textarea class="title_input" id="title_input" rows="1" maxlength="50"
+                    placeholder="제목을 입력하세요." autofocus data-autosave-url="https://localhost:8080/autosave"></textarea>
+            </div>
+            <div class="content">
+                <textarea class="content_input" id="content_input" rows="15" maxlength="1000"
+                    placeholder="작성할 내용을 입력하세요." data-autosave-url="https://localhost:8080/autosave"></textarea>
+            </div>
+            </div>
+            <div class="mycam">
+                <img src="{% url 'detectme' %}" style="width: 200px;" />
+            </div>
+        </div>
+        <!-- {/* <span class="textarea_count">0/1000 (최대 1000자)</span> */} -->
     </div>
     <script src="../static/js/learning.js"></script>
     <script>
@@ -198,7 +196,8 @@
                     url: '/analysis/lecture_event',
                     type: 'POST',
                     data: {
-                        'lecture': "{{lecture}}",
+                        'lecture': "{{lecture.video_id}}",
+                        'student': "{{lecture.student}}",
                         'interaction_type': 'pause',
                         'interaction_time_real': run_time,
                         'interaction_time_lecture': current_time
@@ -214,7 +213,8 @@
                     url: '/analysis/lecture_event',
                     type: 'POST',
                     data: {
-                        'lecture': "{{lecture}}",
+                        'lecture': "{{lecture.video_id}}",
+                        'student': "{{lecture.student}}",
                         'interaction_type': 'redo',
                         'interaction_time_real': run_time,
                         'interaction_time_lecture': current_time
@@ -246,7 +246,8 @@
                 url: '/analysis/lecture_event',
                 type: 'POST',
                 data: {
-                    'lecture': "{{lecture}}",
+                    'lecture': "{{lecture.video_id}}",
+                    'student': "{{lecture.student}}",
                     'interaction_type': 'fast_forward',
                     'interaction_time_real': run_time,
                     'interaction_time_lecture': current_time
@@ -274,7 +275,8 @@
                 url: '/analysis/lecture_event',
                 type: 'POST',
                 data: {
-                    'lecture': "{{lecture}}",
+                    'lecture': "{{lecture.video_id}}",
+                    'student': "{{lecture.student}}",
                     'interaction_type': 'rewind',
                     'interaction_time_real': run_time,
                     'interaction_time_lecture': current_time
@@ -293,6 +295,43 @@
             var box = document.querySelector(".set_speed_box")
             player.setPlaybackRate(parseFloat(box.options[box.selectedIndex].value))
         }
+        // 폴더 선택 및 생성
+        $("input[class='select_folder']").change(function(){
+            var sub_name = event.target.value
+            if (sub_name === '[새로운 과목 지정]') {
+                
+            }
+            else {
+                $.ajax({
+                    url: '/learning/set_subject',
+                    type: 'POST',
+                    data: {
+                        'sub_name': sub_name,
+                        'video_id': '{{lecture.video_id}}',
+                    },
+                    datatype: 'json',
+                })
+            }
+        });
+        // 내 문서함
+        document.querySelector('.mymemo_storage').addEventListener('click', function(event){
+            window.open("{% url 'home' %}");
+        }); 
+        // 학습 종료
+        docu
+        document.querySelector('.finish_learning').addEventListener('click', function(event){
+            $.ajax({
+                    url: '/learning/finish_learning',
+                    type: 'POST',
+                    data: {
+                        'idx': '{{lecture.pk}}',
+                        'lecture_time':total_time,
+                        'learning_time':run_time
+                    },
+                    datatype: 'json',
+                })
+            alert('학습이 완료되었습니다.')
+        }); 
     </script>
 </body>
 

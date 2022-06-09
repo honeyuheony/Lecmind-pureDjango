@@ -28,7 +28,8 @@ def analysis(request):
 # 학습 중 이벤트 기록
 @csrf_exempt
 def lecture_event(request):
-    lec = get_object_or_404(Lecture, pk=request.POST.get('lecture'), user=request.user)
+    student = request.POST.get('student'),
+    lec = get_object_or_404(Lecture, video_id = request.POST.get('lecture'), student=student)
     Interaction.objects.create(
         lecture = lec,
         interaction_type = request.POST.get('interaction_type'),
@@ -40,6 +41,7 @@ def lecture_event(request):
 # to capture video class
 class VideoCamera(object):
     cnt = 0
+    last_frame = ''
     def __init__(self):
         self.video = cv2.VideoCapture(0)    # 윈도우 디폴트 카메라 사용
         (self.grabbed, self.frame) = self.video.read()
@@ -62,8 +64,12 @@ class VideoCamera(object):
             # 구간선정 구현하기
 
     def get_frame(self, analysis):
-        image = self.frame
-        self.set_analysis_data(image, analysis)
+        if self.grabbed:
+            image = self.frame
+            self.last_frame = image
+        else:
+            image = self.last_frame
+        # self.set_analysis_data(image, analysis)
         _, jpeg = cv2.imencode('.jpg', image)   # 이미지파일 byte단위로 읽고 jpg로 디코딩
         return jpeg.tobytes()   # live video를 바이트단위 프레임으로 얻음
     
@@ -72,6 +78,7 @@ class VideoCamera(object):
     def update(self):   # 이미지로부터 비디오 생성
         while True:
             (self.grabbed, self.frame) = self.video.read()
+            
             #self.video.release()
 
 
@@ -89,7 +96,6 @@ def detectme(request):
     lecture = Lecture.objects.filter(student=request.user).latest('update_date')
     analysis, create = Analysis.objects.update_or_create(
         lecture = lecture,
-        name = request.POST.get('subject_name')
     )
     if analysis.total_frames:
         analysis.total_frames = 0
