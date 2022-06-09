@@ -1,5 +1,6 @@
 from django.db import models
 from home.models import User
+from django.db.models import UniqueConstraint
 # Create your models here.
 
 class Lecture(models.Model):
@@ -23,8 +24,13 @@ class Lecture(models.Model):
     state = models.CharField(max_length=20, choices=choice_state)
     video_id = models.CharField(max_length=200)
     
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=['student', 'video_id'], name='unique_lecture')
+        ]
+    
     def __str__(self):
-        return str(self.idx)
+        return str(self.idx) + '.' + str(self.name)
 
 class Notes(models.Model):
     idx = models.AutoField(primary_key=True)

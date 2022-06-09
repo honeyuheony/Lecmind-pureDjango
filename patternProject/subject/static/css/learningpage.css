@@ -254,7 +254,7 @@ span {
       cursor: pointer;
       color: white;
     }
-    .memo_save {
+    .finish_learning {
       position: relative;
       width: 40%;
       height: 35px;
@@ -266,7 +266,7 @@ span {
       font-weight: 600;
     }
   
-    .memo_save:hover {
+    .finish_learning:hover {
       background-color: #888;
       cursor: pointer;
       color: white;

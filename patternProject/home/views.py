@@ -123,13 +123,16 @@ def signin(request):
             login(request, user)
             payload = jwt_payload_handler(user)
             token = jwt_encode_handler(payload)
+            print(api_settings.JWT_EXPRIATION_DELTA)
             response.set_cookie(key = 'Authorization', value = f'{token}')
             request.session['id'] = id
             return response
     return render(request, 'signin.html')
 
 def signout(request):
-    return render(request, 'signin.html')
+    logout(request)
+    request.COOKIES['Authorization'] = ''
+    return redirect('signin')
 
 
 @login_required
@@ -250,11 +253,7 @@ def detail(request,id):
 
 
 
-@login_required
-def signout(request):
-    logout(request)
-    request.COOKIES.Authorization = ''
-    return redirect('signin')
+
 
 # 수강과목 리스트
 @login_required
