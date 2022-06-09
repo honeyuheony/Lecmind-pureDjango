@@ -11,7 +11,7 @@ from . import views
 # app_name = 'subject'
 urlpatterns = [
     path('videotest', views.videotest, name='videotest'),
-    path('/<str:id>', views.learning, name='learning'),
+    path('<str:id>', views.learning, name='learning'),
     path('<str:video_id>', views.learning_test, name='learning_test'),
     
 ]

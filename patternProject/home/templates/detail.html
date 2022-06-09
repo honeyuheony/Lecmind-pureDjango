@@ -372,6 +372,11 @@
         console.log(all_section)
         
         var cur_lecT = "{{cl_lec_lnt}}";
+        var all_rs = {{all_rs}}
+        var all_lnt = {{all_lnt}}
+        var percent = {{percent}}
+
+
         
         // 차트 그리기
         function str2time(str){
@@ -397,33 +402,30 @@
         }
             
          
+
+        let presentSection = {
+            labels: title,
+            datasets: [{
+                type: 'bar',
+                label: '복습추천 구간',
+                data: all_rs,
+                backgroundColor: [
+                    '#FFD36E',
+                ],
+            }, {
+                type: 'line',
+                label: '전체 수강시간',
+                data: all_lnt,
+                backgroundColor: [
+                    '#9FB4FF',
+                ],
+                borderWidth: 2
+            }]
+        };
     
         let barChart = new Chart(chartOne, {
-            type: 'line',
-            data: {
-                labels: title,
-                datasets: [{
-                    label: '차시 별 복습추천구간 빈도수',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 2
-                }]
-            },
+            
+            data: presentSection,
             options: {
                 responsive: false,
                 layout: {

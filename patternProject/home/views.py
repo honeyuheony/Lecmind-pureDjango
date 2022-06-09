@@ -20,6 +20,18 @@ jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 api_settings.JWT_EXPRIATION_DELTA = datetime.timedelta(days=7)
 
+def str2minT(st):
+        st = list(map(int,st))
+        
+        res=0
+        if(len(st)==3):
+            res+= (st[0]*60 + st[1] + st[0]/60)
+        elif(len(st)==2):
+            res+= (st[0] + st[1]/60)
+        else:
+            res+=(st[0]/60)
+        return res
+
 def home(request):  #cur_lectureID
     login_student = request.user
     
@@ -38,18 +50,6 @@ def home(request):  #cur_lectureID
     all_concen = []
     all_lnT=0
     
-    def str2minT(st):
-        st = list(map(int,st))
-        
-        res=0
-        if(len(st)==3):
-            res+= (st[0]*60 + st[1] + st[0]/60)
-        elif(len(st)==2):
-            res+= (st[0] + st[1]/60)
-        else:
-            res+=(st[0]/60)
-        return res
-            
     
     if not all_lectures.exists():
         return render(request, 'init.html', {'login_student':login_student})
@@ -195,12 +195,28 @@ def detail(request,id):
     review_section = Review_section.objects.filter(lecture=current_lecture)
     
     # 해당과목의 전체강의들에 대한 리뷰구간데이터
-    all_review_section=[]
-    for lec in lectureOFsubject:
-        all_review_section += Review_section.objects.filter(lecture=lec)
+    all_rs=[]
+    all_lnt=[]
+    for lec in lectureOFsubject:    # 
+        rs = Review_section.objects.filter(lecture=lec)
+        print(f'rs {rs}')
+        all_lnt.append(round(str2minT(lec.learning_time.split(":")),2)) # 강의 lec의 수강시간
+        tmp=0
+        for i in rs:
+            print(f'i {i.section_start}')
+            sec = str2minT((i.section_end).split(":")) - str2minT((i.section_start).split(":"))
+            tmp+=round(sec,2)
+        all_rs.append(tmp)  # 강의lec의 모든 reviewsection 구간길이
     
-    print(all_review_section)
-    print(review_section)
+    print(all_rs)
+    print(all_lnt)
+    percent = [int(round(all_rs[i]/all_lnt[i],2)*100) for i in range(len(all_rs))]
+    print(percent)
+            
+        
+    
+    # print(all_review_section)
+    # print(review_section)
     
     
     
@@ -226,6 +242,10 @@ def detail(request,id):
         'review_section':review_section,
         'cl_lec_lnt': cl_lec_lnt,
         'analysis_data': analysis_data,
+        
+        'all_rs':all_rs,
+        'all_lnt':all_lnt,
+        'percent':percent
     }
     
     # print(current_lecture)
