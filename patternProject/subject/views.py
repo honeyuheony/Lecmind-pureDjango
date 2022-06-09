@@ -51,7 +51,7 @@ def finish_learning(request):
 
 
 @csrf_exempt
-def learning(request):
+def learning(request, video_id):
     if request.method == "POST":
         # lecture 생성, 이미 있으면 기존 학습 데이터 불러오기
         lec, create = Lecture.objects.update_or_create(

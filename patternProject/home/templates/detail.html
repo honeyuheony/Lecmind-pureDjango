@@ -210,7 +210,9 @@
                                             </canvas>
                                             </div>
                                             <div class="ts-ex">
-                                                <p>{{current_lecture.name}} 학습</p>
+                                                <p>< {{current_lecture.name}} > <br>학습에 대한 복습추천구간입니다</p>
+                                                <a href={% url 'subject:learning' current_lecture.video_id %}
+                                                class="btn btn-sm btn-outline-primary">강의 바로가기</a>
                                             </div>
 
                                             
@@ -224,12 +226,10 @@
                                                         <div class="lectuer-info">
                                                             <p>과목 : {{current_lecture.subject}} </p>
                                                             <p>강의제목 : {{current_lecture.name}} </p>
-                                                            <p>멈춤 횟수: </p>
-                                                            <p>되감기 횟수: </p>
-                                                            <p>시청 속도: </p>
+                                                            <p>멈춤 횟수: {{pause}} </p>
+                                                            <p>되감기 횟수: {{rewind}}</p>
                                                             <p>학습시작 일<br>{{current_lecture.create_date}}</p>
                                                             <p>학습종료 일<br> {{current_lecture.complet_date}}</p>
-
                                                         </div>
 
                                                     </div>
@@ -348,7 +348,7 @@
         var section = [
                 {% for section in review_section %} {
                     idx : "{{section.idx}}",
-                    lecture: {{section.lecture}},
+                    lecture: "{{section.lecture}}",
                     start: "{{section.section_start}}",
                     end : "{{section.section_end}}",
                 },
@@ -358,7 +358,7 @@
         var all_section = [
                 {% for all_section in all_review_section %} {
                     idx : "{{all_section.idx}}",
-                    lecture: {{all_section.lecture}},
+                    lecture: "{{all_section.lecture}}",
                     start: "{{all_section.section_start}}",
                     end : "{{all_section.section_end}}",
                 },
@@ -520,7 +520,7 @@
             //target.width = target.parentElement.clientWidth;
             //target.height = target.parentElement.clientHeight;
             target.width = 600;
-            target.height = 250;
+            target.height = 150;
         }
         // 1. 선 그리기
         function drawCanvas() {

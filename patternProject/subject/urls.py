@@ -8,10 +8,10 @@ from . import views
 # router.register('video-select', SubjectViewSet, basename="subject")
 # router.register('lectuer', LectureViewSet, basename="lectuer")
 
-# app_name = 'subject'
+app_name = 'subject'
 urlpatterns = [
     path('videotest', views.videotest, name='videotest'),
-    path('', views.learning, name='learning'),
+    path('<str:video_id>', views.learning, name='learning'),
     path('set_subject', views.set_subject, name='set_subject'),
     path('finish_learning', views.finish_learning, name='finish_learning'),
     path('create_subject', views.create_subject, name='create_subject'),

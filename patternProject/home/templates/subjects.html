@@ -206,7 +206,7 @@
                                         <a href={% url 'detail' lecture.video_id %}
                                             class="btn btn-sm btn-outline-primary">Go to Detailes</a>
                                         {% else %}
-                                        <a href={% url 'learning' lecture.video_id %}
+                                        <a href={% url 'subject:learning' lecture.video_id %}
                                             class="btn btn-sm btn-outline-primary">Continuing learning</a>
                                         {%endif%}
                                     </div>

@@ -153,6 +153,11 @@
     width:20vw;
     display: flex;
 } */
+.ts-ex {
+    padding: 10px 20px;
+    text-align: center;
+}
+
 
 #chartOne, #chartTwo {
     display: inline-block;
