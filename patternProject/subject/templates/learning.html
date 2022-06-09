@@ -78,11 +78,11 @@
         <div class="writing">
             <div class="title">
                 <textarea class="title_input" id="title_input" rows="1" maxlength="50"
-                    placeholder="제목을 입력하세요." autofocus data-autosave-url="https://localhost:8080/autosave"></textarea>
+                    placeholder="제목을 입력하세요."></textarea>
             </div>
             <div class="content">
                 <textarea class="content_input" id="content_input" rows="15" maxlength="1000"
-                    placeholder="작성할 내용을 입력하세요." data-autosave-url="https://localhost:8080/autosave"></textarea>
+                    placeholder="작성할 내용을 입력하세요."></textarea>
             </div>
             </div>
             <div class="mycam">
@@ -163,34 +163,8 @@
                 }
                 else {
                     run_time += temp_time
+                    current_time += temp_time
                 }
-                // 이벤트 전송
-            }
-            if (event.data == YT.PlayerState.PAUSED && !done) {
-                run_time += temp_time
-                current_time += temp_time
-                // 이벤트 전송
-            }
-            if (event.data == YT.PlayerState.ENDED && !done) {
-                run_time += temp_time
-                current_time += temp_time
-                // 학습 종료, runtime 등 전송
-            }
-            start = new Date()
-        }
-        // 재생 or 정지
-        function play() {
-            end = new Date()
-            temp_time = (end - start) / 1000
-            if (player.getPlayerState() == 2) {
-                run_time += temp_time
-            }
-            else {
-                run_time += temp_time
-                current_time += temp_time
-            }
-            start = new Date()
-            if (player.getPlayerState() == 1) {
                 // 이벤트 전송
                 $.ajax({
                     url: '/analysis/lecture_event',
@@ -204,10 +178,10 @@
                     },
                     datatype: 'json',
                 })
-                player.pauseVideo();
+                
             }
-            if (player.getPlayerState() == 2) {
-                player.playVideo();
+            if (event.data == YT.PlayerState.PAUSED && !done) {
+                run_time += temp_time
                 // 이벤트 전송
                 $.ajax({
                     url: '/analysis/lecture_event',
@@ -221,6 +195,26 @@
                     },
                     datatype: 'json',
                 })
+            }
+            if (event.data == YT.PlayerState.ENDED && !done) {
+                run_time += temp_time
+                current_time += temp_time
+                // 학습 종료, runtime 등 전송
+            }
+            start = new Date()
+        }
+        // 재생 or 정지
+        function play() {
+            end = new Date()
+            temp_time = (end - start) / 1000
+
+            start = new Date()
+            if (player.getPlayerState() == 1) {
+                // 이벤트 전송
+                player.pauseVideo();
+            }
+            if (player.getPlayerState() == 2) {
+                player.playVideo();
             }
             if (player.getPlayerState() == -1) {
                 player.playVideo();
@@ -241,6 +235,7 @@
             start = new Date()
             player.seekTo(parseInt(current_time) + interval)
             current_time += interval
+            console.log(run_time, current_time)
             // 이벤트 전송
             $.ajax({
                 url: '/analysis/lecture_event',
@@ -295,6 +290,20 @@
             var box = document.querySelector(".set_speed_box")
             player.setPlaybackRate(parseFloat(box.options[box.selectedIndex].value))
         }
+
+        // 제목 및 메모 저장
+        $('#title_input').on("change keyup paste input", function(){
+            var memo_data = document.querySelector('#title_input').value
+            $.ajax({
+                    url: '/learning/save_title',
+                    type: 'POST',
+                    data: {
+                        'idx': '{{lecture.pk}}',
+                        'memo': memo_data,
+                    },
+                    datatype: 'json',
+            })
+        });
         // 폴더 선택 및 생성
         $("input[class='select_folder']").change(function(){
             var sub_name = event.target.value
@@ -306,8 +315,8 @@
                     url: '/learning/set_subject',
                     type: 'POST',
                     data: {
+                        'idx': '{{lecture.pk}}',
                         'sub_name': sub_name,
-                        'video_id': '{{lecture.video_id}}',
                     },
                     datatype: 'json',
                 })
@@ -318,8 +327,8 @@
             window.open("{% url 'home' %}");
         }); 
         // 학습 종료
-        docu
         document.querySelector('.finish_learning').addEventListener('click', function(event){
+            alert('학습이 완료되었습니다.')
             $.ajax({
                     url: '/learning/finish_learning',
                     type: 'POST',
@@ -330,7 +339,7 @@
                     },
                     datatype: 'json',
                 })
-            alert('학습이 완료되었습니다.')
+            
         }); 
     </script>
 </body>

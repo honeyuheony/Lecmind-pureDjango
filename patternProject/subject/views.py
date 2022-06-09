@@ -17,13 +17,26 @@ from .permissions import IsOwnerOrReadOnly
 # 1. 과목방 생성 or 선택 ui를 통해 과목방 name post
 # 2. 강의 url post
 @csrf_exempt
+def save_title(request):
+    idx = request.POST.get('idx')
+    lec = get_object_or_404(Lecture, pk = idx)
+    lec.name = request.POST.get('memo')
+    lec.save()
+    note, create = Notes.objects.update_or_create(
+        lecture = lec
+    )
+    note.content = request.POST.get('memo')
+    note.save()
+    return redirect(f"/learning/{lec.video_id}")
+
+@csrf_exempt
 def set_subject(request):
-    video_id = request.POST.get('video_id')
-    lec = get_object_or_404(Lecture, video_id = video_id)
+    idx = request.POST.get('idx')
+    lec = get_object_or_404(Lecture, pk = idx)
     subject = request.POST.get('sub_name')
     lec.subject = subject
     lec.save()
-    return redirect(f"/learning/{video_id}")
+    return redirect(f"/learning/{lec.video_id}")
 
 
 @csrf_exempt
@@ -43,9 +56,25 @@ def finish_learning(request):
     idx = request.POST.get('idx')
     lec = get_object_or_404(Lecture, pk = idx)
     lec.state = 'completed'
+    lec.degree = Lecture.objects.filter(student = lec.student, subject = lec.subject, state = 'completed').count()
     lec.complet_date = datetime.now()
-    lec.lecture_time = request.POST.get('lecture_time')
-    lec.learning_time = request.POST.get('learning_time')
+    lecture_time = int(float(request.POST.get('lecture_time')))
+    if lecture_time > 3600:
+        lecture_time = str(lecture_time // 3600) + ':' + str((lecture_time % 3600) // 60) + ':' + str((lecture_time % 3600) % 60)
+    elif lecture_time >= 60:
+        lecture_time = str(lecture_time // 60) + ':' + str(lecture_time % 60)
+    else:
+        lecture_time = str(lecture_time)
+    learning_time = int(float(request.POST.get('learning_time')))
+    if learning_time > 3600:
+        learning_time = str(learning_time // 3600) + ':' + str((learning_time % 3600) // 60) + ':' + str((learning_time % 3600) % 60)
+    elif learning_time >= 60:
+        learning_time = str(learning_time // 60) + ':' + str(learning_time % 60)
+    else:
+        learning_time = str(learning_time)
+
+    lec.lecture_time = lecture_time
+    lec.learning_time = learning_time
     lec.save()
     return redirect(f"/detail/{lec.video_id}")
 

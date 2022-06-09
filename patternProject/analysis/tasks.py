@@ -45,7 +45,7 @@ class Detect:
     path_identification = "/Users/kuhy/Desktop/Develop/AcademicENFP/identification.txt"
     filename = "video_"
 
-    @shared_task
+    # @shared_task
     def set_concentrate(self, param):
         img = np.array(param)
         num_frames, is_face_compared = self.num_frames, self.is_face_compared
