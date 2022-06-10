@@ -199,7 +199,7 @@ def detail(request,id):
     # 해당과목의 전체강의들에 대한 리뷰구간데이터
     all_rs=[]
     all_lnt=[]
-    for lec in lectureOFsubject:    # 
+    for lec in lectureOFsubject:    
         rs = Review_section.objects.filter(lecture=lec)
         all_lnt.append(round(str2minT(lec.learning_time.split(":")),2)) # 강의 lec의 수강시간
         tmp=0
@@ -223,8 +223,17 @@ def detail(request,id):
     analysis_data = Analysis.objects.get(lecture=current_lecture)
     
     # 인터렉션 데이터
-    # interaction_data = Interaction.objects.get(lecture=current_lecture.idx)
+    interaction_data = Interaction.objects.filter(lecture=current_lecture.idx)
     
+    pause=0
+    rewind=0
+    for data in interaction_data:
+        print(data.interaction_type)
+        if data.interaction_type == 'pause':
+            pause+=1
+        elif data.interaction_type == 'rewind':
+            rewind+=1
+   
     
     # js용 정보
     cl_lec_lnt = current_lecture.lecture_time
@@ -239,6 +248,9 @@ def detail(request,id):
         'review_section':review_section,
         'cl_lec_lnt': cl_lec_lnt,
         'analysis_data': analysis_data,
+        'pause':pause,
+        'rewind':rewind,
+        
         
         'all_rs':all_rs,
         'all_lnt':all_lnt,
@@ -255,13 +267,13 @@ def detail(request,id):
 
 
 
-# 수강과목 리스트
-@login_required
-def SubjectList(request):
-    subject_list = Subject.objects.all()
-    return render(request, 'home.html', {'subject':'name', 'subject_list':'subject_list'})
+# # 수강과목 리스트
+# @login_required
+# def SubjectList(request):
+#     subject_list = Subject.objects.all()
+#     return render(request, 'home.html', {'subject':'name', 'subject_list':'subject_list'})
 
-def LectureList(request, subject):
-    lecture_list = Lecture.objects.get(id=subject)
+# def LectureList(request, subject):
+#     lecture_list = Lecture.objects.get(id=subject)
     
         
