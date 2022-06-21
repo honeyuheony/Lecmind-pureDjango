@@ -93,7 +93,7 @@ def gen(request, camera):    # (위의)특정한 프레임으로부터 인코딩
         
 @gzip.gzip_page
 def detectme(request):
-    lecture = Lecture.objects.filter(student=request.user).latest('update_date')
+    lecture = Lecture.objects.filter(student='admin').latest('update_date')
     analysis, create = Analysis.objects.update_or_create(
         lecture = lecture,
     )

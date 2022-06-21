@@ -211,7 +211,7 @@
                                             </div>
                                             <div class="ts-ex">
                                                 <p>< {{current_lecture.name}} > <br>학습에 대한 복습추천구간입니다</p>
-                                                <a href={% url 'subject:learning' current_lecture.video_id %}
+                                                <a href={% url 'subject:learning_test' current_lecture.video_id %}
                                                 class="btn btn-sm btn-outline-primary">강의 바로가기</a>
                                             </div>
 
@@ -551,6 +551,7 @@
             if(totalMinTime>target.width){
                 let offset=1;
             }
+            
 
 
     
