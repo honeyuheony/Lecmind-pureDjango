@@ -99,6 +99,7 @@ def learning_test(request, video_id):
     lec = get_object_or_404(Lecture, video_id = id)
     subject = Lecture.objects.filter(student = lec.student).values('subject').order_by('subject').distinct()
     subject = subject.exclude(subject='과목 미지정')
+    request.user = lec.student
     return render(request, 'learning.html', {'lecture':lec, 'subject': subject})
 
 @login_required
