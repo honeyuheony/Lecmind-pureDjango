@@ -35,9 +35,9 @@ class Lecture(models.Model):
 class Notes(models.Model):
     idx = models.AutoField(primary_key=True)
     lecture = models.ForeignKey(
-        Lecture, on_delete=models.CASCADE, related_name='notes_lecture')
-    title = models.CharField(max_length=100)
-    content = models.CharField(max_length=500)
+        Lecture, on_delete=models.CASCADE, related_name='notes_lecture', unique=True)
+    title = models.CharField(null=True, blank=True, max_length=100)
+    content = models.CharField(null=True, blank=True, max_length=500)
     
     def __str__(self):
         return str(self.idx)

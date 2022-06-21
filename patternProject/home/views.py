@@ -220,7 +220,7 @@ def detail(request,id):
     
     
     # 집중도 데이터
-    analysis_data = Analysis.objects.get(lecture=current_lecture.idx)
+    analysis_data = Analysis.objects.get(lecture=current_lecture)
     
     # 인터렉션 데이터
     interaction_data = Interaction.objects.filter(lecture=current_lecture.idx)
