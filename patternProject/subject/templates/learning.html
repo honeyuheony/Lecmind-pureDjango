@@ -235,7 +235,6 @@
             start = new Date()
             player.seekTo(parseInt(current_time) + interval)
             current_time += interval
-            console.log(run_time, current_time)
             // 이벤트 전송
             $.ajax({
                 url: '/analysis/lecture_event',
