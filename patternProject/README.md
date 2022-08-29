@@ -1,1 +1,0 @@
-# LearningPattern-BE-v0
